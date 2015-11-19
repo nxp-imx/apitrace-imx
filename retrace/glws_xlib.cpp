@@ -122,7 +122,7 @@ void
 initX(void)
 {
 #ifndef NDEBUG
-    _Xdebug = 1;
+    _Xdebug = 0;
 #endif
 
     XInitThreads();
