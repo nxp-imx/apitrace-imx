@@ -748,7 +748,7 @@ _validateActiveProgram(trace::Call &call);
 
 typedef struct TexDirectVivData
 {
-    GLuint   logical; // used for glTexDirectVIVMap/glTexDirectMapVIV/glTexDirectTiledMapVIV
+    uintptr_t   logical; // used for glTexDirectVIVMap/glTexDirectMapVIV/glTexDirectTiledMapVIV
     GLuint   physical;
     GLuint   index;
     uint32_t size;
@@ -759,12 +759,12 @@ static std::map<GLint, TEXDIRECTVIVDATA> _directTextureDataMap;
 
 #include <g2d.h>
 
-static void * alloc_dma_buffer(int size, unsigned int *logical, unsigned int *physical)
+static void * alloc_dma_buffer(int size, uintptr_t *logical, unsigned int *physical)
 {
     struct g2d_buf *buf = g2d_alloc(size, 0);
     if(buf != NULL)
     {
-        *logical = (unsigned int)buf->buf_vaddr;
+        *logical = (uintptr_t)buf->buf_vaddr;
         *physical = (unsigned int)buf->buf_paddr ;
     }
     return buf;
