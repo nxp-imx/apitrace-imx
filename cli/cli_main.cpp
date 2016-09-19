@@ -40,6 +40,14 @@
 
 #define ARRAY_SIZE(arr) (sizeof (arr) / sizeof (arr[0]))
 
+#define _TXT2STR(t) #t
+#define TXT2STR(t) _TXT2STR(t)
+const char * VERSION = "\n\0$VERSION$"
+#ifdef GIT_STRING
+                            TXT2STR(GIT_STRING)
+#endif
+                            "$\n";
+
 static const char *help_synopsis = "Print detailed help for the given command.";
 
 static void list_commands(void);
