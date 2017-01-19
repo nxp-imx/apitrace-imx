@@ -485,7 +485,9 @@ class Retracer:
         print('    if (retrace::verbosity >= 0) {')
         print('        retrace::unsupported(call);')
         print('    }')
-        print('    return;')
+        # MGS-469: GPU hangs when retracing OGLESParticles on mx6sx
+        # Workaround: do not `return`
+        #print('    return;')
 
     def extractArg(self, function, arg, arg_type, lvalue, rvalue):
         ValueAllocator().visit(arg_type, lvalue, rvalue)
