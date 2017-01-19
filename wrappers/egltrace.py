@@ -49,6 +49,9 @@ class EglTracer(GlTracer):
     ]
 
     def traceFunctionImplBody(self, function):
+        if function.name == 'eglGetProcAddress':
+            print('    procname = __get_alias_func_name(procname);')
+
         GlTracer.traceFunctionImplBody(self, function)
 
         if function.name == 'eglCreateContext':
@@ -117,6 +120,43 @@ if __name__ == '__main__':
     print('#include "glsize.hpp"')
     print('#include "eglsize.hpp"')
     print()
+    print('static const char *__get_alias_func_name(const char *origFunName)')
+    print('{')
+    print('    /* Vivante driver uses alias name for following OES/EXT functions, that means dlsym for thoese functions will fail */')
+    print('    static const char * __glExtProcAlias[][2] =')
+    print('    {')
+    print('        /* Extension API alias for GL_OES_texture_3D */')
+    print('        {"glTexImage3DOES",               "glTexImage3D"},')
+    print('        {"glTexSubImage3DOES",            "glTexSubImage3D"},')
+    print('        {"glCopyTexSubImage3DOES",        "glCopyTexSubImage3D"},')
+    print('        {"glCompressedTexImage3DOES",     "glCompressedTexImage3D"},')
+    print('        {"glCompressedTexSubImage3DOES",  "glCompressedTexSubImage3D"},')
+    print()
+    print('        /* Extension API alias for GL_OES_get_program_binary */')
+    print('        {"glGetProgramBinaryOES",         "glGetProgramBinary"},')
+    print('        {"glProgramBinaryOES",            "glProgramBinary"},')
+    print()
+    print('        /* Extension API alias for GL_OES_vertex_array_object */')
+    print('        {"glBindVertexArrayOES",          "glBindVertexArray"},')
+    print('        {"glDeleteVertexArraysOES",       "glDeleteVertexArrays"},')
+    print('        {"glGenVertexArraysOES",          "glGenVertexArrays"},')
+    print('        {"glIsVertexArrayOES",            "glIsVertexArray"},')
+    print()
+    print('        /* Extension API alias for GL_OES_blend_minmax */')
+    print('        {"glBlendEquationEXT",            "glBlendEquation"}')
+    print('    };')
+    print()
+    print('    int count = sizeof(__glExtProcAlias) / sizeof(__glExtProcAlias[0]);')
+    print('    int i;')
+    print()
+    print('    for(i=0; i<count; i++)')
+    print('    {')
+    print('        if(strcmp(__glExtProcAlias[i][0], origFunName) == 0)')
+    print('            return __glExtProcAlias[i][1];')
+    print('    }')
+    print()
+    print('    return origFunName;')
+    print('}')
     
     module = Module()
     module.mergeModule(eglapi)
