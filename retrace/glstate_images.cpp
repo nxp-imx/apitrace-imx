@@ -1015,6 +1015,10 @@ getDrawBufferImage() {
     if (context.ES) {
         format = GL_RGBA;
     }
+    else {
+        // Vivante driver does not support GL_RGB in openGL driver
+        format = GL_RGBA;
+    }
 
     GLint channels = _gl_format_channels(format);
     if (channels > 4) {
@@ -1049,6 +1053,8 @@ getDrawBufferImage() {
     {
         // TODO: reset imaging state too
         PixelPackState pps(context);
+        // FIXME! in case driver does not support full state
+        glGetError();
         glReadPixels(0, 0, desc.width, desc.height, format, type, image->pixels);
     }
 
