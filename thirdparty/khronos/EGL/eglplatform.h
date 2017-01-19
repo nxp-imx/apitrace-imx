@@ -124,6 +124,7 @@ typedef khronos_uintptr_t EGLNativeWindowType;
 
 #elif defined(__unix__) || defined(USE_X11)
 
+#if defined(HAVE_X11)
 /* X11 (tentative)  */
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
@@ -131,6 +132,11 @@ typedef khronos_uintptr_t EGLNativeWindowType;
 typedef Display *EGLNativeDisplayType;
 typedef Pixmap   EGLNativePixmapType;
 typedef Window   EGLNativeWindowType;
+#else
+typedef void *EGLNativeDisplayType;
+typedef void *EGLNativePixmapType;
+typedef void *EGLNativeWindowType;
+#endif
 
 #elif defined(__APPLE__) || defined(__QNXNTO__)
 
