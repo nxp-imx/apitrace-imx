@@ -267,6 +267,8 @@ traceProgram(trace::API api,
             os::setEnvironment("TRACE_FILE", output);
         }
 
+        os::setEnvironment("ENABLE_API_TRACE", "1");
+
         for (char * const * arg = argv; *arg; ++arg) {
             args.push_back(*arg);
         }
@@ -312,7 +314,9 @@ exit:
     if (output) {
         os::unsetEnvironment("TRACE_FILE");
     }
-    
+
+    os::unsetEnvironment("ENABLE_API_TRACE");
+
     return status;
 
 }
