@@ -224,7 +224,13 @@ _getPublicProcAddress(const char *procName)
 void *
 _getPrivateProcAddress(const char *procName)
 {
-    return (void *)_glXGetProcAddressARB((const GLubyte *)procName);
+    void *proc;
+    proc = _getPublicProcAddress(procName);
+    if (!proc) {
+        proc = (void *)_glXGetProcAddressARB((const GLubyte *)procName);
+    }
+
+    return proc;
 }
 
 
