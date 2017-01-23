@@ -158,6 +158,34 @@ if (ENABLE_EGL AND X11_FOUND AND NOT WIN32 AND NOT APPLE AND NOT ENABLE_WAFFLE)
     install (TARGETS eglretrace RUNTIME DESTINATION bin) 
 endif ()
 
+if (Vivante_FOUND AND ENABLE_EGL AND NOT X11_FOUND AND NOT WIN32 AND NOT APPLE AND NOT ENABLE_WAFFLE AND NOT ANDROID)
+    add_executable (eglretrace
+        glws_nonx.cpp
+    )
+
+    add_dependencies (eglretrace glproc)
+    include_directories (${CMAKE_SYSROOT}/usr/include/HAL/)
+
+    target_link_libraries (eglretrace
+        retrace_common
+        glretrace_common
+        glhelpers
+        glproc_egl
+        ${CMAKE_THREAD_LIBS_INIT}
+        ${CMAKE_DL_LIBS}
+        VDK
+    )
+
+    if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+        target_link_libraries (eglretrace rt)
+        if (READPROC_H_FOUND)
+            target_link_libraries (eglretrace ${proc_LIBRARY})
+        endif ()
+    endif ()
+
+    install (TARGETS eglretrace RUNTIME DESTINATION bin)
+endif ()
+
 if (ENABLE_EGL)
     if (ENABLE_WAFFLE)
         add_executable (eglretrace
