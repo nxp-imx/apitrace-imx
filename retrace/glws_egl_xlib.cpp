@@ -173,6 +173,7 @@ public:
 
         eglWaitNative(EGL_CORE_NATIVE_ENGINE);
 
+#if 0
         /*
          * Some implementations won't update the backbuffer unless we recreate
          * the EGL surface.
@@ -193,6 +194,7 @@ public:
 
         assert(eglWidth == width);
         assert(eglHeight == height);
+#endif
     }
 
     void show(void) {
