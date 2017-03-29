@@ -114,6 +114,9 @@ public:
     void
     writeMD5(std::ostream &os) const;
 
+    char *
+    getMD5();
+
     bool
     writePNG(std::ostream &os, bool strip_alpha = false) const;
 

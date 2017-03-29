@@ -26,6 +26,7 @@
 
 
 #include <fstream>
+#include <string.h>
 #include "image.hpp"
 
 #include "md5.h"
@@ -57,6 +58,30 @@ Image::writeMD5(std::ostream &os) const {
 
     os << csig;
     os << "\n";
+}
+
+
+char *
+Image::getMD5() {
+    struct MD5Context md5c;
+    MD5Init(&md5c);
+    const unsigned char *row;
+    unsigned len = width*bytesPerPixel;
+    for (row = start(); row != end(); row += stride()) {
+        MD5Update(&md5c, (unsigned char *)row, len);
+    }
+    unsigned char signature[16];
+    MD5Final(signature, &md5c);
+
+    const char hex[] = "0123456789ABCDEF";
+    char csig[33];
+    for(int i = 0; i < sizeof signature; i++){
+        csig[2*i    ] = hex[signature[i] >> 4];
+        csig[2*i + 1] = hex[signature[i] & 0xf];
+    }
+    csig[32] = '\0';
+
+    return strdup(csig);
 }
 
 
