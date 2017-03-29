@@ -42,6 +42,11 @@ are saved into '/data/data/$PROCNAME' directory by default:
     adb shell rm /data/data/$PROCNAME/$PROCNAME.trace
 
 
+## Helper script ##
+
+    sh /sdcard/apitrace/bin/apitrace_dalvik.sh com.android.settings
+
+
 ## Tracing on Android pre-4.0 ##
 
 `LD_PRELOAD` is supported since Android 2.3 "Gingerbread" and newer, but
