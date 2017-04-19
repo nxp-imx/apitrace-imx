@@ -35,6 +35,7 @@ import itertools
 
 import specs.stdapi as stdapi
 
+import re
 
 def getWrapperInterfaceName(interface):
     return "Wrap" + interface.expr
@@ -560,13 +561,24 @@ class Tracer:
         print
 
     def traceFunctionImplBody(self, function):
+        multi_draw_function_regex = re.compile(r'^glMultiDraw(Arrays|Elements)([A-Z][a-zA-Z]*)?$' )
         if not function.internal:
             print '    unsigned _call = trace::localWriter.beginEnter(&_%s_sig);' % (function.name,)
             for arg in function.args:
                 if not arg.output:
                     self.serializeArg(function, arg)
             print '    trace::localWriter.endEnter();'
+
+        if self.multi_draw_function_regex.match(function.name):
+            print '    trace::localWriter.beginIgnore();'
+            print '    trace::localWriter.endIgnore();'
+
         self.invokeFunction(function)
+
+        if self.multi_draw_function_regex.match(function.name):
+            print '    trace::localWriter.beginTrace();'
+            print '    trace::localWriter.endTrace();'
+
         if not function.internal:
             print '    trace::localWriter.beginLeave(_call);'
             print '    if (%s) {' % self.wasFunctionSuccessful(function)

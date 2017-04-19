@@ -404,6 +404,7 @@ class GlTracer(Tracer):
 
     # XXX: We currently ignore the gl*Draw*ElementArray* functions
     draw_function_regex = re.compile(r'^gl([A-Z][a-z]+)*Draw(Range)?(Arrays|Elements)([A-Z][a-zA-Z]*)?$' )
+    multi_draw_function_regex = re.compile(r'^glMultiDraw(Arrays|Elements)([A-Z][a-zA-Z]*)?$' )
 
     interleaved_formats = [
          'GL_V2F',
@@ -503,6 +504,11 @@ class GlTracer(Tracer):
 
         # ... to the draw calls
         if self.draw_function_regex.match(function.name):
+            if not self.multi_draw_function_regex.match(function.name):
+                print '    if (trace::localWriter.isIgnored()) {'
+                self.invokeFunction(function)
+                print '        return;'
+                print '    }'
             print '    if (_need_user_arrays()) {'
             if 'Indirect' in function.name:
                 print r'        os::log("apitrace: warning: %s: indirect user arrays not supported\n");' % (function.name,)
