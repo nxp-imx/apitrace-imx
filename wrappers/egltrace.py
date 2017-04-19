@@ -294,3 +294,14 @@ void APIENTRY glWeightPointerOESBounds(GLint size, GLenum type, GLsizei stride, 
 
 
 '''
+    print r'''
+/*
+ * This is a dummy API to let the GPU driver know that we are in apitrace
+ */
+extern "C" PUBLIC
+void APIENTRY ApiTraceEnabled(void) {
+    // a dummy function
+    os::log("Dummy API function\n");
+}
+
+'''
