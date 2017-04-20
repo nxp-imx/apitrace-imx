@@ -972,6 +972,9 @@ class Tracer:
     def emit_memcpy(self, ptr, size):
         print '    trace::fakeMemcpy(%s, %s);' % (ptr, size)
     
+    def emit_memcpy_opt(self, ptr, size):
+        print '    trace::fakeMemcpyOpt(%s, %s);' % (ptr, size)
+
     def fake_call(self, function, args):
         print '            unsigned _fake_call = trace::localWriter.beginEnter(&_%s_sig, true);' % (function.name,)
         for arg, instance in zip(function.args, args):

@@ -35,6 +35,10 @@
 #include <fcntl.h>
 #endif
 
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
 #include "os_binary.hpp"
 #include "os_crtdbg.hpp"
 #include "os_time.hpp"
@@ -98,6 +102,7 @@ bool profilingPixelsDrawn = false;
 bool profilingMemoryUsage = false;
 bool useCallNos = true;
 bool singleThread = false;
+bool performance = false;
 
 unsigned frameNo = 0;
 unsigned callNo = 0;
@@ -633,7 +638,9 @@ usage(const char *argv0) {
         "      --dump-format=FORMAT dump state format (`json` or `ubjson`)\n"
         "  -w, --wait              waitOnFinish on final frame\n"
         "      --loop[=N]          loop N times (N<0 continuously) replaying final frame.\n"
-        "      --singlethread      use a single thread to replay command stream\n";
+        "      --singlethread      use a single thread to replay command stream\n"
+        "      --performance       discard the memcpy in retrace egl VIV extension\n"
+        ;
 }
 
 enum {
@@ -657,6 +664,7 @@ enum {
     SNAPSHOT_STARTFRAME_OPT,
     SNAPSHOT_STOPFRAME_OPT,
     REFERENCE_DUMP_OPT,
+    PERFORMANCE_OPT,
 };
 
 const static char *
@@ -692,6 +700,7 @@ longOptions[] = {
     {"snapshot-start", required_argument, 0, SNAPSHOT_STARTFRAME_OPT},
     {"snapshot-stop", required_argument, 0, SNAPSHOT_STOPFRAME_OPT},
     {"reference-dump", required_argument, 0, REFERENCE_DUMP_OPT},
+    {"performance", no_argument, 0, PERFORMANCE_OPT},
     {0, 0, 0, 0}
 };
 
@@ -927,6 +936,10 @@ int main(int argc, char **argv)
             if (openReferenceDump(optarg)) {
                 return 1;
             }
+            break;
+        case PERFORMANCE_OPT:
+            retrace::performance = true;
+            parser->skip_spec_call = true;
             break;
         default:
             std::cerr << "error: unknown option " << opt << "\n";

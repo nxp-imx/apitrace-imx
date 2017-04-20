@@ -56,6 +56,8 @@ public:
     virtual bool open(const char *filename) = 0;
     virtual void close(void) = 0;
     virtual unsigned long long getVersion(void) const = 0;
+public:
+    bool skip_spec_call;
 };
 
 
