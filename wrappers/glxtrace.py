@@ -66,6 +66,11 @@ class GlxTracer(GlTracer):
         if function.name in self.destroyContextFunctionNames:
             print('    gltrace::releaseContext((uintptr_t)ctx);')
 
+        if function.name == 'glXGetCurrentDisplay':
+            print('    if(_glXGetCurrentDisplay == &glXGetCurrentDisplay ){')
+            print('        _glXGetCurrentDisplay = (PFN_GLXGETCURRENTDISPLAY)_getPublicProcAddress("glXGetCurrentDisplay");')
+            print('    }')
+
         GlTracer.traceFunctionImplBody(self, function)
 
         if function.name == 'glXCreateContextAttribsARB':
