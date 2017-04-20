@@ -131,6 +131,7 @@ if (WIN32 OR APPLE OR X11_FOUND)
             # http://stackoverflow.com/questions/2702628/gdb-cannot-find-new-threads-generic-error
             ${CMAKE_THREAD_LIBS_INIT}
             ${CMAKE_DL_LIBS}
+            ${Vivante_G2D_LIBRARY}
         )
     endif ()
 
@@ -154,6 +155,7 @@ if (ENABLE_EGL AND X11_FOUND AND NOT WIN32 AND NOT APPLE AND NOT ENABLE_WAFFLE)
         ${X11_X11_LIB}
         ${CMAKE_THREAD_LIBS_INIT}
         ${CMAKE_DL_LIBS}
+        ${Vivante_G2D_LIBRARY}
     )
     install (TARGETS eglretrace RUNTIME DESTINATION bin) 
 endif ()
@@ -173,7 +175,8 @@ if (Vivante_FOUND AND ENABLE_EGL AND NOT X11_FOUND AND NOT WIN32 AND NOT APPLE A
         glproc_egl
         ${CMAKE_THREAD_LIBS_INIT}
         ${CMAKE_DL_LIBS}
-        VDK
+        ${Vivante_G2D_LIBRARY}
+        ${Vivante_VDK_LIBRARY}
     )
 
     if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")

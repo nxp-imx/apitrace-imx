@@ -44,6 +44,8 @@ option (ENABLE_WAFFLE "Enable WAFFLE support." OFF)
 
 option (ENABLE_FRAME_POINTER "Disable frame pointer omission" ON)
 
+option (ENABLE_VIVANTE "Enable Vivante support." OFF)
+
 # Proprietary Linux games often ship their own libraries (zlib, libstdc++,
 # etc.) in order to ship a single set of binaries across multiple
 # distributions.  Given that apitrace wrapper modules will be loaded into those
@@ -157,6 +159,15 @@ endif ()
 if (ENABLE_EGL AND ENABLE_WAFFLE)
     # Use Waffle for eglretrace
     find_package (Waffle REQUIRED)
+endif ()
+
+if (ENABLE_VIVANTE)
+    find_package (Vivante)
+    if (Vivante_FOUND)
+        add_definitions (-DHAVE_VIVANTE_G2D)
+    else()
+        message (FATAL_ERROR "Vivante requested but not found.")
+    endif()
 endif ()
 
 
