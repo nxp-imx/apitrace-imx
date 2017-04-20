@@ -96,6 +96,9 @@ glws::Drawable *
 createDrawable(glprofile::Profile profile);
 
 glws::Drawable *
+createPixmapDrawable(glprofile::Profile profile);
+
+glws::Drawable *
 createDrawable(void);
 
 glws::Drawable *

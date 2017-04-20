@@ -99,6 +99,12 @@ createDrawable(glprofile::Profile profile) {
 
 
 glws::Drawable *
+createPixmapDrawable(glprofile::Profile profile) {
+    return createDrawableHelper(profile, false, true);
+}
+
+
+glws::Drawable *
 createDrawable(void) {
     return createDrawable(defaultProfile);
 }
