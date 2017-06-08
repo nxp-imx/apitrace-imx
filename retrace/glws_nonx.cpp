@@ -74,8 +74,8 @@ public:
     EGLNativePixmapType native_pixmap;
     EGLenum api;
 
-    NonxDrawable(const Visual *vis, int w, int h, bool pbuffer) :
-        Drawable (vis, w, h, pbuffer),
+    NonxDrawable(const Visual *vis, int w, int h, const pbuffer_info *info) :
+        Drawable (vis, w, h, info),
         api(EGL_OPENGL_ES_API)
     {
         native_pixmap = (EGLNativePixmapType)0;
@@ -387,9 +387,10 @@ createVisual(bool doubleBuffer, unsigned samples, Profile profile) {
 }
 
 Drawable *
-createDrawable(const Visual *visual, int width, int height, bool pbuffer)
+createDrawable(const Visual *visual, int width, int height,
+        const pbuffer_info *info)
 {
-    return new NonxDrawable(visual, width, height, pbuffer);
+    return new NonxDrawable(visual, width, height, info);
 }
 
 Context *
@@ -490,6 +491,26 @@ bool
 processEvents(void)
 {
     return false;
+}
+
+bool
+bindTexImage(Drawable *pBuffer, int iBuffer) {
+    std::cerr << "error: NonX::wglBindTexImageARB not implemented.\n";
+    assert(pBuffer->pbuffer);
+    return true;
+}
+
+bool
+releaseTexImage(Drawable *pBuffer, int iBuffer) {
+    std::cerr << "error: NonX::wglReleaseTexImageARB not implemented.\n";
+    assert(pBuffer->pbuffer);
+    return true;
+}
+
+bool
+setPbufferAttrib(Drawable *pBuffer, const int *attribList) {
+    assert(pBuffer->pbuffer);
+    return true;
 }
 
 }
