@@ -318,6 +318,19 @@ void * dlopen(const char *filename, int flag)
             strcmp(filename, "libGL.so") == 0 ||
             strcmp(filename, "libGL.so.1") == 0;
 
+        void *caller = __builtin_return_address(0);
+        Dl_info info;
+        if (dladdr(caller, &info)) {
+            const char *caller_module = info.dli_fname;
+            os::log("apitrace: dlopen(%s) called from %s\n", filename, caller_module);
+            if ( (strcmp(caller_module, "/usr/lib/libGAL.so") == 0)
+              || (strcmp(caller_module, "/usr/lib/libVDK.so") == 0)
+               )
+            {
+                intercept = false;
+            }
+        }
+
         if (intercept) {
             os::log("apitrace: redirecting dlopen(\"%s\", 0x%x)\n", filename, flag);
 
@@ -332,7 +345,11 @@ void * dlopen(const char *filename, int flag)
         }
     }
 
-    void *handle = _dlopen(filename, flag);
+    void *handle = _dlopen(filename, RTLD_NOW);
+    if (!handle) {
+        os::log("apitrace: warning: dlopen(%s,%x) failed %s\n", filename, flag, dlerror());
+        return handle;
+    }
 
     if (intercept) {
         // Get the file path for our shared object, and use it instead
@@ -353,6 +370,7 @@ void * dlopen(const char *filename, int flag)
         }
     }
 
+    os::log("apitrace: %p\n", handle);
     return handle;
 }
 

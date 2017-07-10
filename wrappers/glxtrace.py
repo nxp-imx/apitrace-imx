@@ -198,7 +198,11 @@ void * dlopen(const char *filename, int flag)
 {
     void *handle;
 
-    handle = _dlopen(filename, flag);
+    handle = _dlopen(filename, RTLD_NOW);
+    if (!handle) {
+        os::log("apitrace: warning: dlopen(%s,%x) failed %s\n", filename, flag, dlerror());
+        return handle;
+    }
 
     const char * libgl_filename = getenv("TRACE_LIBGL");
 
@@ -211,12 +215,24 @@ void * dlopen(const char *filename, int flag)
         if (strcmp(filename, "libGL.so") == 0 ||
             strcmp(filename, "libGL.so.1") == 0) {
 
+            void *caller = __builtin_return_address(0);
+            Dl_info info;
+            if (dladdr(caller, &info)) {
+                const char *caller_module = info.dli_fname;
+                os::log("apitrace: dlopen(%s) called from %s\n", filename, caller_module);
+                if ( (strcmp(caller_module, "/usr/lib/libGAL.so") == 0)
+                  || (strcmp(caller_module, "/usr/lib/libVDK.so") == 0)
+                   )
+                {
+                    return handle;
+                }
+            }
+
             // Use the true libGL.so handle instead of RTLD_NEXT from now on
             _libGlHandle = handle;
 
             // Get the file path for our shared object, and use it instead
             static int dummy = 0xdeedbeef;
-            Dl_info info;
             if (dladdr(&dummy, &info)) {
                 os::log("apitrace: redirecting dlopen(\"%s\", 0x%x)\n", filename, flag);
                 handle = _dlopen(info.dli_fname, flag);
