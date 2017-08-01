@@ -40,6 +40,8 @@ option (ENABLE_CLI "Enable command Line interface." ON)
 
 option (ENABLE_EGL "Enable EGL support." ON)
 
+option (ENABLE_MULTIARCH "Enable multiarch support." ON)
+
 option (ENABLE_WAFFLE "Enable WAFFLE support." OFF)
 
 option (ENABLE_FRAME_POINTER "Disable frame pointer omission" ON)
@@ -370,7 +372,7 @@ set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 ##############################################################################
 # Installation directories
 
-if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+if (ENABLE_MULTIARCH AND CMAKE_SYSTEM_NAME STREQUAL "Linux")
     # Debian multiarch support
     execute_process(COMMAND dpkg-architecture -qDEB_HOST_MULTIARCH
         OUTPUT_VARIABLE ARCH_SUBDIR
