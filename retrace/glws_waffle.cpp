@@ -119,6 +119,26 @@ processEvents(void) {
     return true;
 }
 
+static void
+error_waffle(void)
+{
+    const struct waffle_error_info *info = waffle_error_get_info();
+    const char *code = waffle_error_to_string(info->code);
+
+    if (info->message_length > 0)
+        std::cerr << "error:"
+                  << " " << info->message << "."
+                  << " " << code << "(" << info->code << ")"
+                  << "\n"
+                  ;
+    else
+        std::cerr << "error:"
+                  << " " << code << "(" << info->code << ")"
+                  << "\n"
+                  ;
+}
+
+
 void
 init(void)
 {
@@ -155,15 +175,20 @@ init(void)
     }
 #endif
 
+    bool ok;
     Attributes<int32_t> waffle_init_attrib_list;
     waffle_init_attrib_list.add(WAFFLE_PLATFORM, waffle_platform);
     waffle_init_attrib_list.end(WAFFLE_NONE);
 
-    waffle_init(waffle_init_attrib_list);
+    ok = waffle_init(waffle_init_attrib_list);
+    if (!ok) {
+        error_waffle();
+        exit(1);
+    }
 
     dpy = waffle_display_connect(NULL);
     if (!dpy) {
-        std::cerr << "error: waffle_display_connect failed\n";
+        error_waffle();
         exit(1);
     }
 }
@@ -202,7 +227,7 @@ createVisual(bool doubleBuffer, unsigned samples, Profile profile) {
     }
 
     if (!waffle_display_supports_context_api(dpy, waffle_api)) {
-        std::cerr << "error: waffle_display_supports_context_api failed \n";
+        error_waffle();
         exit(1);
         return NULL;
     }
@@ -234,7 +259,7 @@ createVisual(bool doubleBuffer, unsigned samples, Profile profile) {
 
     cfg = waffle_config_choose(dpy, config_attrib_list);
     if (!cfg) {
-        std::cerr << "error: waffle_config_choose failed\n";
+        error_waffle();
         exit(1);
         return NULL;
     }
@@ -268,7 +293,7 @@ createContext(const Visual *visual, Context *shareContext,
 
     context = waffle_context_create(waffleVisual->config, share_context);
     if (!context) {
-        std::cerr << "error: waffle_context_create failed\n";
+        error_waffle();
         exit(1);
         return NULL;
     }
