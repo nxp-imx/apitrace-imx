@@ -884,6 +884,10 @@ class GlTracer(Tracer):
             nameArg = function.args[0].name
             print('    if (strcmp("glNotifyMappedBufferRangeVMWX", (const char *)%s) == 0) {' % (nameArg,))
             print('        _result = (%s)&glNotifyMappedBufferRangeVMWX;' % (function.type,))
+            print('    } else if (strcmp("glTexDirectVIV", (const char *)%s) == 0) {' % (nameArg,))
+            print('        _result = (%s)&glTexDirectVIV;' % (function.type,))
+            print('    } else if (strcmp("glTexDirectInvalidateVIV", (const char *)%s) == 0) {' % (nameArg,))
+            print('        _result = (%s)&glTexDirectInvalidateVIV;' % (function.type,))
             for marker_function in self.marker_functions:
                 if self.api.getFunctionByName(marker_function):
                     print('    } else if (strcmp("%s", (const char *)%s) == 0) {' % (marker_function, nameArg))
