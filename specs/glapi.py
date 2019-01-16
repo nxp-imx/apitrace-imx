@@ -3675,10 +3675,11 @@ glapi.addFunctions([
     GlFunction(Void, "glAddSwapHintRectWIN", [(GLint, "x"), (GLint, "y"), (GLsizei, "width"), (GLsizei, "height")]),
 
     # Vivante extension
-    GlFunction(Void, "glTexDirectVIV", [(GLenum, "target"), (GLsizei, "width"), (GLsizei, "height"), (GLenum, "format"), Out(Array(GLuint, 3), "pixels")]),
-    GlFunction(Void, "glTexDirectVIVMap", [(GLenum, "target"), (GLsizei, "width"), (GLsizei, "height"), (GLenum, "format"),      (Pointer(GLuint), "Logical"), (Pointer(Const(GLuint)), "Physical")]),
-    GlFunction(Void, "glTexDirectMapVIV", [(GLenum, "target"), (GLsizei, "width"), (GLsizei, "height"), (GLenum, "format"),       (Pointer(GLuint), "Logical"), (Pointer(Const(GLuint)), "Physical")]),
-    GlFunction(Void, "glTexDirectTiledMapVIV", [(GLenum, "target"), (GLsizei, "width"), (GLsizei, "height"), (GLenum, "format"), (Pointer(GLuint), "Logical"), (Pointer(Const(GLuint)), "Physical")]),
+    GlFunction(Void, "glTexDirectVIV", [(GLenum, "target"), (GLsizei, "width"), (GLsizei, "height"), (GLenum, "format"), (Out(Array(GLpointer,3), "pixels")) ]),
+
+    GlFunction(Void, "glTexDirectVIVMap", [(GLenum, "target"), (GLsizei, "width"), (GLsizei, "height"), (GLenum, "format"),      (OpaquePointer(GLpointer), "Logical"), (Pointer(Const(GLuint)), "Physical")]),
+    GlFunction(Void, "glTexDirectMapVIV", [(GLenum, "target"), (GLsizei, "width"), (GLsizei, "height"), (GLenum, "format"),      (OpaquePointer(GLpointer), "Logical"), (Pointer(Const(GLuint)), "Physical")]),
+    GlFunction(Void, "glTexDirectTiledMapVIV", [(GLenum, "target"), (GLsizei, "width"), (GLsizei, "height"), (GLenum, "format"), (OpaquePointer(GLpointer), "Logical"), (Pointer(Const(GLuint)), "Physical")]),
     GlFunction(Void, "glTexDirectInvalidateVIV", [(GLenum, "target")]),
 
 ])

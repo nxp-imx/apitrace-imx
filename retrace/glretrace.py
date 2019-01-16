@@ -273,24 +273,25 @@ class GlRetracer(Retracer):
             print('    }')
             print('    if(tex != 0)')
             print('    {')
+            print('        GLuint pindex = *(GLuint*)Logical;')
             print('        TEXDIRECTVIVDATA &data = _directTextureDataMap[tex];')
             print('        if(data.privateData == 0) // new entry')
             print('        {')
-            print('            data.privateData = alloc_dma_buffer(size, &data.logical, &data.physical);')
-            print('            data.index=Logical[0];')
-            print('            data.size=size;')
-            print('            retrace::addRegion(call,data.index,(void*)data.logical,size);')
+            print('            data.privateData = alloc_dma_buffer(size, (uintptr_t*)&data.logical, &data.physical);')
+            print('            data.index = pindex;')
+            print('            data.size = size;')
+            print('            retrace::addRegion(call,data.index,data.logical,size);')
             print('        }')
             print('        else // already have one; check size and index')
             print('        {')
-            print('            if((size!=data.size)||(Logical[0]!=data.index))')
+            print('            if((size!=data.size)||(pindex!=data.index))')
             print('            {')
-            print('                retrace::delRegionByPointer((void*)data.logical);')
+            print('                retrace::delRegionByPointer(data.logical);')
             print('                free_dma_buffer(data.privateData);')
-            print('                data.privateData = alloc_dma_buffer(size, &data.logical, &data.physical);')
-            print('                data.index=Logical[0];')
-            print('                data.size=size;')
-            print('                retrace::addRegion(call,data.index,(void*)data.logical,size);')
+            print('                data.privateData = alloc_dma_buffer(size, (uintptr_t*)&data.logical, &data.physical);')
+            print('                data.index = pindex;')
+            print('                data.size = size;')
+            print('                retrace::addRegion(call,data.index,data.logical,size);')
             print('            }')
             print('        }')
             print('        *Logical = data.logical;')
@@ -752,10 +753,10 @@ _validateActiveProgram(trace::Call &call);
 
 typedef struct TexDirectVivData
 {
-    uintptr_t   logical; // used for glTexDirectVIVMap/glTexDirectMapVIV/glTexDirectTiledMapVIV
-    GLuint   physical;
-    GLuint   index;
-    uint32_t size;
+    GLvoid    *logical; // used for glTexDirectVIVMap/glTexDirectMapVIV/glTexDirectTiledMapVIV
+    GLuint     physical;
+    GLuint     index;
+    uint32_t   size;
     void *privateData; // used to allocate buffer
 }TEXDIRECTVIVDATA;
 
