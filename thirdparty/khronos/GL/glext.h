@@ -4755,6 +4755,40 @@ GLAPI void APIENTRY glGetBufferPointervARB (GLenum target, GLenum pname, void **
 #endif
 #endif /* GL_ARB_vertex_buffer_object */
 
+/*------------------------------------------------------------------------*
+ * VIV extension functions
+ *------------------------------------------------------------------------*/
+
+/* GL_VIV_direct_texture */
+#ifndef GL_VIV_direct_texture
+#define GL_VIV_direct_texture 1
+
+#define GL_VIV_YV12                                                0x8FC0
+#define GL_VIV_NV12                                                0x8FC1
+#define GL_VIV_YUY2                                                0x8FC2
+#define GL_VIV_UYVY                                                0x8FC3
+#define GL_VIV_NV21                                                0x8FC4
+#define GL_VIV_I420                                                0x8FC5
+#define GL_VIV_AYUV                                                0x8FC6
+#define GL_VIV_YUV420_10_ST                                        0x8FC7
+#define GL_VIV_YUV420_TILE_ST                                      0x8FC8
+#define GL_VIV_YUV420_TILE_10_ST                                   0x8FC9
+
+#ifdef GL_GLEXT_PROTOTYPES
+GLAPI void APIENTRY glTexDirectVIV (GLenum Target, GLsizei Width, GLsizei Height, GLenum Format, GLvoid ** Pixels);
+GLAPI void APIENTRY glTexDirectVIVMap (GLenum Target, GLsizei Width, GLsizei Height, GLenum Format, GLvoid ** Logical, const GLuint * Physical);
+GLAPI void APIENTRY glTexDirectMapVIV (GLenum Target, GLsizei Width, GLsizei Height, GLenum Format, GLvoid ** Logical, const GLuint * Physical);
+GLAPI void APIENTRY glTexDirectTiledMapVIV(GLenum Target, GLsizei Width, GLsizei Height, GLenum Format, GLvoid ** Logical, const GLuint * Physical);
+GLAPI void APIENTRY glTexDirectInvalidateVIV (GLenum Target);
+#endif
+typedef void (APIENTRYP PFNGLTEXDIRECTVIVPROC) (GLenum Target, GLsizei Width, GLsizei Height, GLenum Format, GLvoid ** Pixels);
+typedef void (APIENTRYP PFNGLTEXDIRECTVIVMAPPROC) (GLenum Target, GLsizei Width, GLsizei Height, GLenum Format, GLvoid ** Logical, const GLuint * Physical);
+typedef void (APIENTRYP PFNGLTEXDIRECTMAPVIVPROC) (GLenum Target, GLsizei Width, GLsizei Height, GLenum Format, GLvoid ** Logical, const GLuint * Physical);
+typedef void (APIENTRYP PFNGLTEXDIRECTTILEDMAPVIVPROC) (GLenum Target, GLsizei Width, GLsizei Height, GLenum Format, GLvoid ** Logical, const GLuint * Physical);
+typedef void (APIENTRYP PFNGLTEXDIRECTINVALIDATEVIVPROC) (GLenum Target);
+#endif
+
+
 #ifndef GL_ARB_vertex_program
 #define GL_ARB_vertex_program 1
 #define GL_COLOR_SUM_ARB                  0x8458
