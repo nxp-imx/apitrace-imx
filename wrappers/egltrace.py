@@ -308,26 +308,44 @@ void * dlopen(const char *filename, int flag)
     bool intercept = false;
 
     if (filename) {
+        const char *pch = strrchr(filename,'/');
+        const char *filename_base = filename;
+        if (pch)
+        {
+            filename_base = pch+1;
+        }
         intercept =
-            strcmp(filename, "libEGL.so") == 0 ||
-            strcmp(filename, "libEGL.so.1") == 0 ||
-            strcmp(filename, "libGLESv1_CM.so") == 0 ||
-            strcmp(filename, "libGLESv1_CM.so.1") == 0 ||
-            strcmp(filename, "libGLESv2.so") == 0 ||
-            strcmp(filename, "libGLESv2.so.2") == 0 ||
-            strcmp(filename, "libGL.so") == 0 ||
-            strcmp(filename, "libGL.so.1") == 0;
+            strcmp(filename_base, "libEGL.so") == 0 ||
+            strcmp(filename_base, "libEGL.so.1") == 0 ||
+            strcmp(filename_base, "libGLESv1_CM.so") == 0 ||
+            strcmp(filename_base, "libGLESv1_CM.so.1") == 0 ||
+            strcmp(filename_base, "libGLESv2.so") == 0 ||
+            strcmp(filename_base, "libGLESv2.so.2") == 0 ||
+            strcmp(filename_base, "libGL.so") == 0 ||
+            strcmp(filename_base, "libGL.so.1") == 0
+            ;
 
         void *caller = __builtin_return_address(0);
         Dl_info info;
         if (dladdr(caller, &info)) {
             const char *caller_module = info.dli_fname;
-            os::log("apitrace: dlopen(%s) called from %s\n", filename, caller_module);
-            if ( (strcmp(caller_module, "/usr/lib/libGAL.so") == 0)
-              || (strcmp(caller_module, "/usr/lib/libVDK.so") == 0)
+            const char *pch = strrchr(caller_module,'/');
+            const char *caller_module_base = caller_module;
+            if (pch)
+            {
+                caller_module_base = pch+1;
+            }
+
+            if ( (strcmp(caller_module_base, "libGAL.so") == 0)
+            ||   (strcmp(caller_module_base, "libVDK.so") == 0)
                )
             {
+                os::log("apitrace: %s calls to %s will NOT be traced\n", caller_module_base, filename_base);
                 intercept = false;
+            }
+            else
+            {
+                os::log("apitrace: %s calls to %s will be intercepted\n", caller_module_base, filename_base);
             }
         }
 
