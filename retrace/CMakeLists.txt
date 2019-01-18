@@ -191,10 +191,11 @@ endif ()
 
 if (ENABLE_EGL)
     if (ENABLE_WAFFLE)
+        link_directories(${Waffle_LIBRARY_DIRS})
+
         add_executable (eglretrace
             glws_waffle.cpp
         )
-
         add_dependencies (eglretrace glproc)
         include_directories (${Waffle_INCLUDE_DIRS})
 
