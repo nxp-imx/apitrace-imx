@@ -139,6 +139,9 @@ public:
 
     bool
     writeRAW(const char *filename) const;
+
+    bool
+    getMD5(char* csig, size_t csig_sz) const;
 };
 
 
