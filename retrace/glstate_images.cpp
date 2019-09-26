@@ -1365,6 +1365,8 @@ getDrawBufferImage(int n, bool backBuffer)
     {
         // TODO: reset imaging state too
         PixelPackState pps(context);
+        // FIXME! in case driver does not support full state
+        glGetError();
         glReadPixels(0, 0, desc.width, desc.height, format, type, image->pixels);
     }
 
