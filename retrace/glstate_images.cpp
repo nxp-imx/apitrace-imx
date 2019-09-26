@@ -1276,6 +1276,10 @@ getDrawBufferImage(int n, bool backBuffer)
             return nullptr;
         }
     }
+    else {
+        // Vivante driver does not support GL_RGB in openGL driver
+        format = GL_RGBA;
+    }
 
     GLenum framebuffer_binding;
     GLenum framebuffer_target;
