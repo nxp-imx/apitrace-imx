@@ -37,6 +37,17 @@ namespace image {
 
 void
 Image::writeMD5(std::ostream &os) const {
+    char csig[33];
+    getMD5(csig, sizeof(csig));
+    os << csig;
+    os << "\n";
+}
+
+bool
+Image::getMD5(char* csig,size_t csig_sz) const {
+    if (csig_sz<33)
+        return false;
+
     struct MD5Context md5c;
     MD5Init(&md5c);
     const unsigned char *row;
@@ -48,17 +59,12 @@ Image::writeMD5(std::ostream &os) const {
     MD5Final(signature, &md5c);
 
     const char hex[] = "0123456789ABCDEF";
-    char csig[33];
     for(int i = 0; i < sizeof signature; i++){
         csig[2*i    ] = hex[signature[i] >> 4];
         csig[2*i + 1] = hex[signature[i] & 0xf];
     }
     csig[32] = '\0';
-
-    os << csig;
-    os << "\n";
 }
-
 
 } /* namespace image */
 
