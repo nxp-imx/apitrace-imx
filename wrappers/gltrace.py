@@ -497,6 +497,11 @@ class GlTracer(Tracer):
                 if 'Multi' in functionRadical:
                     assert 'drawcount' in function.argNames()
                     paramsType = 'Multi' + paramsType
+                else:
+                    print('    if (trace::localWriter.isIgnored()) {')
+                    self.invokeFunction(function)
+                    print('        return;')
+                    print('    }')
                 print(r'        %s _params;' % paramsType)
 
                 for arg in function.args:
