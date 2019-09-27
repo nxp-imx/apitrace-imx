@@ -98,6 +98,8 @@ enum LibClass {
     LIB_EGL,
     LIB_GLES1,
     LIB_GLES2,
+    LIB_VDK,
+    LIB_GAL,
 };
 
 
@@ -131,6 +133,14 @@ classifyLibrary(const char *pathname)
     }
 #endif
 
+    if (strcmp(filename, "libGAL.so") == 0) {
+        return LIB_GAL;
+    }
+
+    if (strcmp(filename, "libVDK.so") == 0) {
+        return LIB_VDK;
+    }
+
     /*
      * TODO: Identify driver SOs (e.g, *_dri.so), to prevent intercepting
      * dlopen calls from them.
@@ -163,10 +173,16 @@ void * dlopen(const char *filename, int flag)
     if (intercept) {
         void *caller = __builtin_return_address(0);
         Dl_info info;
+        LibClass callerLib = LIB_UNKNOWN;
         const char *caller_module = "<unknown>";
         if (dladdr(caller, &info)) {
             caller_module = info.dli_fname;
-            intercept = classifyLibrary(caller_module) == LIB_UNKNOWN;
+            callerLib = classifyLibrary(caller_module);
+            intercept = callerLib == LIB_UNKNOWN;
+        }
+        if (callerLib == LIB_GAL || callerLib == LIB_VDK)
+        {
+            intercept = false;
         }
 
         const char * libgl_filename = getenv("TRACE_LIBGL");
