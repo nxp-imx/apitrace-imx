@@ -179,6 +179,10 @@ extern bool profilingMemoryUsage;
  */
 extern bool dumpingState;
 extern bool dumpingSnapshots;
+/**
+ * Whether to discard the memcpy called by the VIV texture.
+ */
+extern bool performance;
 
 
 enum Driver {

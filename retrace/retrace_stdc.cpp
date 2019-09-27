@@ -117,8 +117,42 @@ retrace_memcpy(trace::Call &call)
 }
 
 
+static void retrace_memcpy_opt(trace::Call &call) {
+    if(retrace::performance==true)
+    {
+        return;
+    }
+
+    retrace::Range destRange;
+    retrace::toRange(call.arg(0), destRange);
+
+    retrace::Range srcRange;
+    retrace::toRange(call.arg(1), srcRange);
+
+    size_t n = call.arg(2).toUInt();
+
+    if (!destRange.ptr || !srcRange.ptr || !n) {
+        return;
+    }
+
+    if (n > destRange.len) {
+        retrace::warning(call) << "dest buffer overflow of " << n - destRange.dims << " bytes\n";
+    }
+
+    if (n > srcRange.len) {
+        retrace::warning(call) << "src buffer overflow of " << n - srcRange.dims << " bytes\n";
+    }
+
+    n = std::min(n, srcRange.len);
+    n = std::min(n, destRange.len);
+
+    memcpy(destRange.ptr, srcRange.ptr, n);
+}
+
+
 const retrace::Entry retrace::stdc_callbacks[] = {
     {"malloc", &retrace_malloc},
     {"memcpy", &retrace_memcpy},
+    {"memcpy_opt", &retrace_memcpy_opt},
     {NULL, NULL}
 };

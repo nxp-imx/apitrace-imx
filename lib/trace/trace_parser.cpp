@@ -78,6 +78,8 @@ bool Parser::open(const char *filename) {
         parseProperties();
     }
 
+    skip_spec_call = false;
+
     return true;
 }
 
@@ -460,6 +462,10 @@ void Parser::parse_enter(Mode mode) {
     Call *call = new Call(sig, sig->flags, thread_id);
 
     call->no = next_call_no++;
+
+    if((skip_spec_call == true)&&(sig->id==4)) {
+        mode = SCAN;
+    }
 
     if (parse_call_details(call, mode)) {
         calls.push_back(call);
