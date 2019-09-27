@@ -59,6 +59,8 @@ public:
     virtual const Properties & getProperties(void) const = 0;
 
     const std::string & getProperty(const char *name) const;
+public:
+    bool skip_spec_call;
 };
 
 

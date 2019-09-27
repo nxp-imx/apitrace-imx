@@ -43,6 +43,10 @@
 #include <psapi.h>
 #endif
 
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
 #include "os_binary.hpp"
 #include "os_crtdbg.hpp"
 #include "os_time.hpp"
@@ -126,6 +130,7 @@ bool ignoreRetvals = false;
 bool contextCheck = true;
 bool snapshotForceBackbuffer = false;
 int64_t minCpuTime = 1000;
+bool performance = false;
 
 retrace::EQueryHandling queryResultHandling = retrace::QUERY_SKIP;
 
@@ -801,6 +806,7 @@ usage(const char *argv0) {
         "      --no-context-check  don't check that the actual GL context version matches the requested version\n"
         "      --min-cpu-time=NANOSECONDS  ignore calls with less than this CPU time when profiling (default is 1000)\n"
         "      --ignore-calls=CALLSET    ignore calls in CALLSET\n"
+        "      --performance       discard the memcpy in retrace egl VIV extension\n"
     ;
 }
 
@@ -843,6 +849,7 @@ enum {
     SNAPSHOT_STARTFRAME_OPT,
     SNAPSHOT_STOPFRAME_OPT,
     REFERENCE_DUMP_OPT,
+    PERFORMANCE_OPT,
 };
 
 const static char *
@@ -898,6 +905,7 @@ longOptions[] = {
     {"snapshot-start", required_argument, 0, SNAPSHOT_STARTFRAME_OPT},
     {"snapshot-stop", required_argument, 0, SNAPSHOT_STOPFRAME_OPT},
     {"reference-dump", required_argument, 0, REFERENCE_DUMP_OPT},
+    {"performance", no_argument, 0, PERFORMANCE_OPT},
     {0, 0, 0, 0}
 };
 
@@ -1360,6 +1368,10 @@ int main(int argc, char **argv)
             if (openReferenceDump(optarg)) {
                 return 1;
             }
+            break;
+        case PERFORMANCE_OPT:
+            retrace::performance = true;
+            parser->skip_spec_call = true;
             break;
         default:
             std::cerr << "error: unknown option " << opt << "\n";

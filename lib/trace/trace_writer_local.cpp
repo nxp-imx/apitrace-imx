@@ -59,6 +59,9 @@ const FunctionSig free_sig = {2, "free", 1, free_args};
 static const char *realloc_args[2] = {"ptr", "size"};
 const FunctionSig realloc_sig = {3, "realloc", 2, realloc_args};
 
+static const char *memcpy_opt_args[3] = {"dest", "src", "n"};
+const FunctionSig memcpy_opt_sig = {0xFFFF, "memcpy_opt", 3, memcpy_opt_args};
+
 
 static void exceptionCallback(void)
 {
@@ -305,6 +308,26 @@ void fakeMemcpy(const void *ptr, size_t size) {
     }
 #endif
 
+    localWriter.beginArg(0);
+    localWriter.writePointer((uintptr_t)ptr);
+    localWriter.endArg();
+    localWriter.beginArg(1);
+    localWriter.writeBlob(ptr, size);
+    localWriter.endArg();
+    localWriter.beginArg(2);
+    localWriter.writeUInt(size);
+    localWriter.endArg();
+    localWriter.endEnter();
+    localWriter.beginLeave(_call);
+    localWriter.endLeave();
+}
+
+void fakeMemcpyOpt(const void *ptr, size_t size) {
+    assert(ptr);
+    if (!size) {
+        return;
+    }
+    unsigned _call = localWriter.beginEnter(&memcpy_opt_sig, true);
     localWriter.beginArg(0);
     localWriter.writePointer((uintptr_t)ptr);
     localWriter.endArg();
