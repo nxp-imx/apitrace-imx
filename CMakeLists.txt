@@ -43,6 +43,8 @@ option (ENABLE_ASAN "Enable Address Sanitizer" OFF)
 
 option (ENABLE_TESTS "Enable additional tests" OFF)
 
+option (ENABLE_VIVANTE "Enable Vivante support." OFF)
+
 if (ANDROID)
     message (FATAL_ERROR "Android is no longer supported (https://git.io/vH2gW)")
 endif ()
@@ -200,6 +202,14 @@ if (ENABLE_EGL AND NOT ENABLE_X11)
     add_definitions (-DEGL_NO_X11)
 endif ()
 
+if (ENABLE_VIVANTE)
+    find_package (Vivante)
+    if (Vivante_FOUND)
+        add_definitions (-DHAVE_VIVANTE_G2D)
+    else()
+        message (FATAL_ERROR "Vivante requested but not found.")
+    endif()
+endif ()
 
 ##############################################################################
 # Set global build options
