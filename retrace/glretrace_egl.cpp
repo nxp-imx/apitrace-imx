@@ -164,6 +164,24 @@ static void retrace_eglSwapBuffersWithDamage(trace::Call &call) {
     }
 }
 
+static void createPixmapDrawable(unsigned long long orig_config, unsigned long long orig_surface)
+{
+    ProfileMap::iterator it = profile_map.find(orig_config);
+    glfeatures::Profile profile;
+
+    // If the requested config is associated with a profile, use that
+    // profile. Otherwise, assume that the last used profile is what
+    // the user wants.
+    if (it != profile_map.end()) {
+        profile = it->second;
+    } else {
+        profile = last_profile;
+    }
+
+    glws::Drawable *drawable = glretrace::createPixmapDrawable(profile);
+    drawable_map[orig_surface] = drawable;
+}
+
 static void retrace_eglChooseConfig(trace::Call &call) {
     if (!call.ret->toSInt()) {
         return;
@@ -213,6 +231,12 @@ static void retrace_eglCreatePbufferSurface(trace::Call &call) {
     unsigned long long orig_surface = call.ret->toUIntPtr();
     createDrawable(orig_config, orig_surface);
     // TODO: Respect the pbuffer dimensions too
+}
+
+static void retrace_eglCreatePixmapSurface(trace::Call &call) {
+    unsigned long long orig_config = call.arg(1).toUIntPtr();
+    unsigned long long orig_surface = call.ret->toUIntPtr();
+    createPixmapDrawable(orig_config, orig_surface);
 }
 
 static void retrace_eglDestroySurface(trace::Call &call) {
@@ -350,7 +374,7 @@ const retrace::Entry glretrace::egl_callbacks[] = {
     {"eglGetConfigAttrib", &retrace::ignore},
     {"eglCreateWindowSurface", &retrace_eglCreateWindowSurface},
     {"eglCreatePbufferSurface", &retrace_eglCreatePbufferSurface},
-    //{"eglCreatePixmapSurface", &retrace::ignore},
+    {"eglCreatePixmapSurface", &retrace_eglCreatePixmapSurface},
     {"eglDestroySurface", &retrace_eglDestroySurface},
     {"eglQuerySurface", &retrace::ignore},
     {"eglBindAPI", &retrace_eglBindAPI},
