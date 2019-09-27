@@ -34,6 +34,7 @@
 #include <getopt.h>
 #ifndef _WIN32
 #include <unistd.h> // for isatty()
+#include <fcntl.h>
 #endif
 #ifdef _WIN32
 #include <malloc.h> // _get_heap_handle
@@ -70,6 +71,9 @@ static trace::CallSet snapshotFrequency;
 static unsigned snapshotInterval = 0;
 
 static unsigned dumpStateCallNo = ~0;
+static unsigned snapshotStart = 0;
+static unsigned snapshotStop = (unsigned)-1;
+static int compareImageFd = -1;
 
 retrace::Retracer retracer;
 
@@ -135,6 +139,9 @@ long long minFrameDurationUsec = 0;
 static void
 takeSnapshot(unsigned call_no, bool backBuffer);
 
+static int
+checkMD5(char *md5, int framenr);
+
 
 /**
  * Called when we are about to present.
@@ -177,6 +184,61 @@ frameComplete(trace::Call &call)
     if (bNeedFrameDelay) {
         lastFrameTime = os::getTime();
     }
+}
+
+static int openReferenceDump(const char *file)
+{
+    compareImageFd = open(file, O_RDONLY);
+    if (compareImageFd == -1) {
+        std::cerr << "error: failed to open the reference dump file: " << file << std::endl;
+        return -1;
+    }
+    return 0;
+}
+
+// caller to free the return md5
+static char * getRefMD5(int fd, int frame)
+{
+    char buf[33];
+    // 33 chars per line (including '\n')
+    if(lseek(fd, frame * 33, SEEK_SET) == -1) {
+        std::cerr << "Failed to seek to frame " << frame << std::endl;
+        return NULL;
+    }
+    if(read(fd, buf, 32) != 32) {
+        std::cerr << "Failed to read 32 bytes\n";
+        return NULL;
+    }
+
+    buf[32] = 0;
+
+    return strdup(buf);
+}
+
+static int checkMD5(char *md5, int framenr)
+{
+    // read line #snapshot_no
+    char *md5ref = getRefMD5(compareImageFd, framenr);
+    int pass = 0;
+    if(md5ref != NULL && strcmp(md5, md5ref) == 0)
+    {
+        // pass
+        pass = 1;
+    }
+    else
+    {
+        // fail
+        pass = 0;
+    }
+    if(!pass) {
+        std::cerr << "Mismatch found for frame " << framenr
+            << ": reference " << (md5ref?md5ref:"(null)")
+            << ", but " << (md5?md5:"(null)") << " found\n";
+        exit(1); // no more test?
+    }
+    free(md5ref);
+
+    return 0;
 }
 
 
@@ -249,7 +311,14 @@ takeSnapshot(unsigned call_no, int mrt, unsigned snapshot_no, bool backBuffer) {
                 src->writeRAW(std::cout);
                 break;
             case RAW_MD5:
-                src->writeMD5(std::cout);
+                if(compareImageFd != -1) {
+                    char md5[33];
+                    src->getMD5(md5,sizeof(md5));
+                    checkMD5(md5, snapshot_no);
+                }
+                else {
+                    src->writeMD5(std::cout);
+                }
                 break;
             default:
                 assert(0);
@@ -717,6 +786,9 @@ usage(const char *argv0) {
         "      --snapshot-interval=N    specify a frame interval when generating snaphots (default is 0)\n"
         "  -t, --snapshot-threaded encode screenshots on multiple threads\n"
         "      --snapshot-force-backbuffer always read from the backbuffer when taking a snapshot (default read from the current draw buffer)\n"
+        "      --snapshot-start=N  start snapshot from frame N\n"
+        "      --snapshot-stop=N   stop snapshot before frame N\n"
+        "      --reference-dump=FILE    use a reference dump file to compare snapshot. Only MD5 is supported now.\n"
         "  -v, --verbose           increase output verbosity\n"
         "  -D, --dump-state=CALL   dump state at specific call no\n"
         "      --dump-format=FORMAT dump state format (`json` or `ubjson`)\n"
@@ -768,6 +840,9 @@ enum {
     QUERY_HANDLING_OPT,
     QUERY_CHECK_TOLARANCE_OPT,
     IGNORE_CALLS_OPT,
+    SNAPSHOT_STARTFRAME_OPT,
+    SNAPSHOT_STOPFRAME_OPT,
+    REFERENCE_DUMP_OPT,
 };
 
 const static char *
@@ -820,6 +895,9 @@ longOptions[] = {
     {"no-context-check", no_argument, 0, NO_CONTEXT_CHECK},
     {"min-cpu-time", required_argument, 0, MIN_CPU_TIME_OPT},
     {"ignore-calls", required_argument, 0, IGNORE_CALLS_OPT},
+    {"snapshot-start", required_argument, 0, SNAPSHOT_STARTFRAME_OPT},
+    {"snapshot-stop", required_argument, 0, SNAPSHOT_STOPFRAME_OPT},
+    {"reference-dump", required_argument, 0, REFERENCE_DUMP_OPT},
     {0, 0, 0, 0}
 };
 
@@ -1272,6 +1350,17 @@ int main(int argc, char **argv)
 
             retrace::callsToIgnore.merge(optarg);
             break;
+        case SNAPSHOT_STARTFRAME_OPT:
+            snapshotStart = atoi(optarg);
+            break;
+        case SNAPSHOT_STOPFRAME_OPT:
+            snapshotStop = atoi(optarg);
+            break;
+        case REFERENCE_DUMP_OPT:
+            if (openReferenceDump(optarg)) {
+                return 1;
+            }
+            break;
         default:
             std::cerr << "error: unknown option " << opt << "\n";
             usage(argv[0]);
@@ -1346,6 +1435,9 @@ int main(int argc, char **argv)
 
     // XXX: X often hangs on XCloseDisplay
     //retrace::cleanUp();
+    if(compareImageFd != -1)
+        close(compareImageFd);
+
 
 #ifdef _WIN32
     if (mmRes == MMSYSERR_NOERROR) {
