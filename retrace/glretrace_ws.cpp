@@ -103,6 +103,11 @@ createDrawable(void) {
     return createDrawable(defaultProfile);
 }
 
+glws::Drawable *
+createPixmapDrawable(glfeatures::Profile profile) {
+    return createDrawableHelper(profile, false, true);
+}
+
 
 glws::Drawable *
 createPbuffer(int width, int height, const glws::pbuffer_info *pbInfo) {
