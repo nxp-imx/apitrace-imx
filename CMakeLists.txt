@@ -42,6 +42,8 @@ option (BUILD_TESTING "Enable unit tests" ON)
 
 option (ENABLE_TESTS "Enable additional tests" OFF)
 
+option (ENABLE_MULTIARCH "Enable multiarch support." ON)
+
 if (ANDROID)
     message (FATAL_ERROR "Android is no longer supported (https://git.io/vH2gW)")
 endif ()
@@ -437,7 +439,7 @@ endif ()
 ##############################################################################
 # Installation directories
 
-if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+if (ENABLE_MULTIARCH AND CMAKE_SYSTEM_NAME STREQUAL "Linux")
     # Debian multiarch support
     execute_process(COMMAND dpkg-architecture -qDEB_HOST_MULTIARCH
         OUTPUT_VARIABLE ARCH_SUBDIR
