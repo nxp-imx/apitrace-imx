@@ -178,6 +178,8 @@ if (ENABLE_EGL AND X11_FOUND AND NOT WIN32 AND NOT APPLE AND NOT ENABLE_WAFFLE)
 endif ()
 
 if (ENABLE_EGL AND ENABLE_WAFFLE)
+    link_directories(${Waffle_LIBRARY_DIRS})
+
     add_executable (eglretrace
         glws_waffle.cpp
     )
