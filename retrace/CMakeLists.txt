@@ -200,6 +200,14 @@ if (ENABLE_EGL AND ENABLE_WAFFLE)
         ${CMAKE_THREAD_LIBS_INIT}
         ${CMAKE_DL_LIBS}
     )
+
+    if (Vivante_FOUND)
+        target_link_libraries (eglretrace
+            ${Vivante_G2D_LIBRARY}
+            ${Vivante_VDK_LIBRARY}
+        )
+    endif ()
+
     install (TARGETS eglretrace RUNTIME DESTINATION bin)
 endif ()
 
