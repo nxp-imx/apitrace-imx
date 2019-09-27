@@ -142,5 +142,7 @@ namespace trace {
 
     void fakeMemcpy(const void *ptr, size_t size);
 
+    void fakeMemcpyOpt(const void *ptr, size_t size);
+
 } /* namespace trace */
 
