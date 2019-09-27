@@ -160,6 +160,7 @@ LocalWriter::open(void) {
 static uintptr_t next_thread_num = 1;
 
 static OS_THREAD_LOCAL uintptr_t thread_num;
+static OS_THREAD_LOCAL uint32_t ignored_num;
 
 void LocalWriter::checkProcessId(void) {
     if (m_file &&
@@ -248,6 +249,36 @@ void LocalWriter::flush(void) {
     }
     mutex.unlock();
 }
+
+bool LocalWriter::isIgnored(void) {
+    mutex.lock();
+    if (0==ignored_num){
+        mutex.unlock();
+        return false;
+    } else {
+        mutex.unlock();
+        return true;
+    }
+}
+
+void LocalWriter::beginIgnore(void) {
+    mutex.lock();
+    ++ignored_num;
+}
+
+void LocalWriter::endIgnore(void) {
+    mutex.unlock();
+}
+
+void LocalWriter::beginTrace(void) {
+    mutex.lock();
+    --ignored_num;
+}
+
+void LocalWriter::endTrace(void) {
+    mutex.unlock();
+}
+
 
 
 LocalWriter localWriter;

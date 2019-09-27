@@ -108,6 +108,31 @@ namespace trace {
         void endLeave(void);
 
         void flush(void);
+
+        /**
+         * Check ingore state
+         */
+        bool isIgnored(void);
+
+        /**
+         * It will stop the trace apicall.
+         */
+        void beginIgnore(void);
+
+        /**
+         * It will release mutex.
+         */
+        void endIgnore(void);
+
+        /**
+         * It will resume the trace apicall.
+         */
+        void beginTrace(void);
+
+        /**
+         * It will release mutex.
+         */
+        void endTrace(void);
     };
 
     /**
