@@ -142,6 +142,9 @@ glws::Drawable *
 createDrawable(void);
 
 glws::Drawable *
+createPixmapDrawable(glfeatures::Profile profile);
+
+glws::Drawable *
 createPbuffer(int width, int height, const glws::pbuffer_info *info);
 
 Context *
