@@ -240,6 +240,59 @@ class GlRetracer(Retracer):
             print('    glretrace::trackResourceName(program, programInterface, index, traced_name);')
         if function.name == "glGetProgramResourceiv":
             print('    glretrace::mapResourceLocation(program, programInterface, index, call.arg(4).toArray(), call.arg(7).toArray(), _location_map);')
+        if function.name == "glTexDirectVIVMap" or function.name == "glTexDirectMapVIV" or function.name == "glTexDirectTiledMapVIV":
+            print('#if defined(HAVE_VIVANTE_G2D)')
+            print('    GLint tex;')
+            print('    glGetIntegerv(GL_TEXTURE_BINDING_2D, &tex);')
+            print('    int32_t size = 0;')
+            print('    switch(format){')
+            print('    case GL_VIV_YV12:')
+            print('    case GL_VIV_I420:')
+            print('    case GL_VIV_NV12:')
+            print('    case GL_VIV_NV21:')
+            print('        size=width * height * 3 / 2;')
+            print('        break;')
+            print('    case GL_RGBA:')
+            print('    case GL_BGRA_EXT:')
+            print('        size=width * height * 4;')
+            print('        break;')
+            print('    case GL_RGB:')
+            print('        size=width * height *3;')
+            print('        break;')
+            print('    case GL_VIV_YUY2:')
+            print('    case GL_VIV_UYVY:')
+            print('    case GL_RGB565_OES:')
+            print('        size=width * height *2;')
+            print('        break;')
+            print('    default:')
+            print('        break;')
+            print('    }')
+            print('    if(tex != 0)')
+            print('    {')
+            print('        TEXDIRECTVIVDATA &data = _directTextureDataMap[tex];')
+            print('        if(data.privateData == 0) // new entry')
+            print('        {')
+            print('            data.privateData = alloc_dma_buffer(size, &data.logical, &data.physical);')
+            print('            data.index=Logical[0];')
+            print('            data.size=size;')
+            print('            retrace::addRegion(call,data.index,(void*)data.logical,size);')
+            print('        }')
+            print('        else // already have one; check size and index')
+            print('        {')
+            print('            if((size!=data.size)||(Logical[0]!=data.index))')
+            print('            {')
+            print('                retrace::delRegionByPointer((void*)data.logical);')
+            print('                free_dma_buffer(data.privateData);')
+            print('                data.privateData = alloc_dma_buffer(size, &data.logical, &data.physical);')
+            print('                data.index=Logical[0];')
+            print('                data.size=size;')
+            print('                retrace::addRegion(call,data.index,(void*)data.logical,size);')
+            print('            }')
+            print('        }')
+            print('        *Logical = data.logical;')
+            print('        *Physical = data.physical;')
+            print('    }')
+            print('#endif /* HAVE_VIVANTE_G2D */')
         # Infer the drawable size from GL calls
         if function.name == "glViewport":
             print('    glretrace::updateDrawable(x + width, y + height);')
@@ -267,6 +320,54 @@ class GlRetracer(Retracer):
             print(r'    if (currentContext) {')
             print(r'        currentContext->insideBeginEnd = false;')
             print(r'    }')
+
+        if function.name == "glTexDirectVIV":
+            print('#if defined(HAVE_VIVANTE_G2D)')
+            print('    int32_t ysize = 0;')
+            print('    int32_t usize = 0;')
+            print('    int32_t vsize = 0;')
+            print('    switch(format){')
+            print('    case GL_VIV_YV12:')
+            print('    case GL_VIV_I420:')
+            print('        ysize=width * height;')
+            print('        usize=ysize/4;')
+            print('        vsize=usize;')
+            print('        break;')
+            print('    case GL_VIV_NV12:')
+            print('    case GL_VIV_NV21:')
+            print('        ysize=width * height;')
+            print('        usize=ysize/2;')
+            print('        vsize=0;')
+            print('        break;')
+            print('    case GL_RGBA:')
+            print('    case GL_BGRA_EXT:')
+            print('        ysize=width * height *4;')
+            print('        usize=0;')
+            print('        vsize=0;')
+            print('        break;')
+            print('    case GL_RGB:')
+            print('        ysize=width * height *3;')
+            print('        usize=0;')
+            print('        vsize=0;')
+            print('        break;')
+            print('    case GL_VIV_YUY2:')
+            print('    case GL_VIV_UYVY:')
+            print('    case GL_RGB565_OES:')
+            print('        ysize=width * height *2;')
+            print('        usize=0;')
+            print('        vsize=0;')
+            print('        break;')
+            print('    default:')
+            print('        break;')
+            print('    }')
+            print('    const trace::Array * arrayGLvoid = (call.arg(4)).toArray();')
+            print('    if(ysize > 0)')
+            print('        retrace::addRegion(call,(*arrayGLvoid->values[0]).toUInt(),(GLvoid*)pixels[0], ysize);')
+            print('    if(usize > 0)')
+            print('        retrace::addRegion(call,(*arrayGLvoid->values[1]).toUInt(),(GLvoid*)pixels[1], usize);')
+            print('    if(vsize > 0)')
+            print('        retrace::addRegion(call,(*arrayGLvoid->values[2]).toUInt(),(GLvoid*)pixels[2], vsize);')
+            print('#endif /* HAVE_VIVANTE_G2D */')
 
         if function.name == 'memcpy':
             print('    if (!dest || !src || !n) return;')
@@ -635,6 +736,47 @@ _getActiveProgram(void);
 
 static void
 _validateActiveProgram(trace::Call &call);
+
+#if defined(HAVE_VIVANTE_G2D)
+
+#define GL_VIV_YV12                        0x8FC0
+#define GL_VIV_NV12                        0x8FC1
+#define GL_VIV_YUY2                        0x8FC2
+#define GL_VIV_UYVY                        0x8FC3
+#define GL_VIV_NV21                        0x8FC4
+#define GL_VIV_I420                        0x8FC5
+
+typedef struct TexDirectVivData
+{
+    GLuint   logical; // used for glTexDirectVIVMap/glTexDirectMapVIV/glTexDirectTiledMapVIV
+    GLuint   physical;
+    GLuint   index;
+    uint32_t size;
+    void *privateData; // used to allocate buffer
+}TEXDIRECTVIVDATA;
+
+static std::map<GLint, TEXDIRECTVIVDATA> _directTextureDataMap;
+
+#include <g2d.h>
+
+static void * alloc_dma_buffer(int size, unsigned int *logical, unsigned int *physical)
+{
+    struct g2d_buf *buf = g2d_alloc(size, 0);
+    if(buf != NULL)
+    {
+        *logical = (unsigned int)buf->buf_vaddr;
+        *physical = (unsigned int)buf->buf_paddr ;
+    }
+    return buf;
+}
+
+static void free_dma_buffer(void *buf)
+{
+    if(buf != NULL)
+        g2d_free((g2d_buf *)buf);
+}
+
+#endif /* HAVE_VIVANTE_G2D */
 
 ''')
     api = stdapi.API()
