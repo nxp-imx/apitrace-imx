@@ -250,12 +250,11 @@ void * dlopen(const char *filename, int flag)
 '''
     print r'''
 /*
- * This is a dummy API to let the GPU driver know that we are in apitrace
+ * let the GPU driver know that we are in apitrace
  */
 extern "C" PUBLIC
-void APIENTRY ApiTraceEnabled(void) {
-    // a dummy function
-    os::log("Dummy API function\n");
+int APIENTRY ApiTraceEnabled(void) {
+    return 1;
 }
 
 '''

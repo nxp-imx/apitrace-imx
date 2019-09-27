@@ -327,7 +327,7 @@ void * dlopen(const char *filename, int flag)
 
         void *caller = __builtin_return_address(0);
         Dl_info info;
-        if (dladdr(caller, &info)) {
+        if (intercept && dladdr(caller, &info)) {
             const char *caller_module = info.dli_fname;
             const char *pch = strrchr(caller_module,'/');
             const char *caller_module_base = caller_module;
@@ -340,22 +340,20 @@ void * dlopen(const char *filename, int flag)
             ||   (strcmp(caller_module_base, "libVDK.so") == 0)
                )
             {
-                os::log("apitrace: %s calls to %s will NOT be traced\n", caller_module_base, filename_base);
+                os::log("apitrace: don't intercept calls from:%s to:%s\n", caller_module_base, filename);
                 intercept = false;
             }
             else
             {
-                os::log("apitrace: %s calls to %s will be intercepted\n", caller_module_base, filename_base);
+                os::log("apitrace: intercept calls from:%s to:%s\n", caller_module_base, filename);
             }
-        }
 
-        if (intercept) {
-            os::log("apitrace: redirecting dlopen(\"%s\", 0x%x)\n", filename, flag);
-
-            /* The current dispatch implementation relies on core entry-points to be globally available, so force this.
+            /* The current dispatch implementation relies on core entry-points
+             * to be globally available, so force this.
              *
-             * TODO: A better approach would be note down the entry points here and
-             * use them latter. Another alternative would be to reopen the library
+             * TODO: A better approach would be to note down the entry points
+             * and use them latter.
+             * Another alternative would be to reopen the library
              * with RTLD_NOLOAD | RTLD_GLOBAL.
              */
             flag &= ~RTLD_LOCAL;
@@ -363,9 +361,9 @@ void * dlopen(const char *filename, int flag)
         }
     }
 
-    void *handle = _dlopen(filename, RTLD_NOW);
+    void *handle = _dlopen(filename, flag);
     if (!handle) {
-        os::log("apitrace: warning: dlopen(%s,%x) failed %s\n", filename, flag, dlerror());
+        os::log("apitrace: warning: dlopen(%s,0x%x) failed %s\n", filename, flag, dlerror());
         return handle;
     }
 
@@ -375,22 +373,23 @@ void * dlopen(const char *filename, int flag)
         Dl_info info;
         if (dladdr(&dummy, &info)) {
             handle = _dlopen(info.dli_fname, flag);
+            os::log("apitrace: redirect dlopen(\"%s\", 0x%x) to dlopen(\"%s\", 0x%x)\n", filename, flag, info.dli_fname, flag);
         } else {
             os::log("apitrace: warning: dladdr() failed\n");
         }
-
-        // SDL will skip dlopen'ing libEGL.so after it spots EGL symbols on our
-        // wrapper, so force loading it here.
-        // (https://github.com/apitrace/apitrace/issues/291#issuecomment-59734022)
-        if (strcmp(filename, "libEGL.so") != 0 &&
-            strcmp(filename, "libEGL.so.1") != 0) {
-            _dlopen("libEGL.so.1", RTLD_GLOBAL | RTLD_LAZY);
-        }
     }
 
-    os::log("apitrace: %p\n", handle);
+    // SDL will skip dlopen'ing libEGL.so after it spots EGL symbols on our
+    // wrapper, so force loading it here.
+    // (https://github.com/apitrace/apitrace/issues/291#issuecomment-59734022)
+    if (strcmp(filename, "libEGL.so") != 0 &&
+        strcmp(filename, "libEGL.so.1") != 0) {
+        _dlopen("libEGL.so.1", RTLD_GLOBAL | RTLD_NOW);
+    }
+
     return handle;
 }
+
 
 
 #if defined(ANDROID)
@@ -457,12 +456,12 @@ void APIENTRY glWeightPointerOESBounds(GLint size, GLenum type, GLsizei stride, 
 '''
     print r'''
 /*
- * This is a dummy API to let the GPU driver know that we are in apitrace
+ * let the GPU driver know that we are in apitrace
  */
 extern "C" PUBLIC
-void APIENTRY ApiTraceEnabled(void) {
-    // a dummy function
-    os::log("Dummy API function\n");
+int APIENTRY ApiTraceEnabled(void) {
+    fprintf(stderr, "YES\n");
+    return 1;
 }
 
 '''
