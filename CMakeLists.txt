@@ -192,7 +192,11 @@ endif ()
 
 if (ENABLE_EGL AND ENABLE_WAFFLE)
     # Use Waffle for eglretrace
-    find_package (Waffle REQUIRED)
+    find_package (Waffle QUIET)
+    if (NOT Waffle_FOUND)
+      find_package(PkgConfig)
+      pkg_check_modules(WAFFLE REQUIRED waffle-1)
+    endif()
 endif ()
 
 if (ENABLE_EGL AND NOT ENABLE_X11)
