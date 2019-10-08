@@ -182,6 +182,7 @@ endif ()
 
 if (ENABLE_EGL AND ENABLE_WAFFLE)
     link_directories(${Waffle_LIBRARY_DIRS})
+    link_directories(${WAFFLE_LIBRARY_DIRS})
 
     add_executable (eglretrace
         glws_waffle.cpp
@@ -189,6 +190,7 @@ if (ENABLE_EGL AND ENABLE_WAFFLE)
 
     add_dependencies (eglretrace glproc)
     include_directories (${Waffle_INCLUDE_DIRS})
+    include_directories (${WAFFLE_INCLUDE_DIRS})
 
     target_link_libraries (eglretrace
         retrace_common
@@ -196,6 +198,7 @@ if (ENABLE_EGL AND ENABLE_WAFFLE)
         glhelpers
         glproc_egl
         ${Waffle_LIBRARIES}
+        ${WAFFLE_LIBRARIES}
         ${X11_X11_LIB}
         ${CMAKE_THREAD_LIBS_INIT}
         ${CMAKE_DL_LIBS}
