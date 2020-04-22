@@ -151,7 +151,7 @@ init(void)
 #elif defined(_WIN32)
     waffle_platform = WAFFLE_PLATFORM_WGL
 #else
-    waffle_platform = WAFFLE_PLATFORM_GLX;
+    waffle_platform = WAFFLE_PLATFORM_WAYLAND;
 
     const char *waffle_platform_name = getenv("WAFFLE_PLATFORM");
     if (waffle_platform_name) {
