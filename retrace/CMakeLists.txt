@@ -157,7 +157,7 @@ if (WIN32 OR APPLE OR X11_FOUND)
     install_pdb (glretrace DESTINATION bin)
 endif ()
 
-if (ENABLE_EGL AND X11_FOUND AND NOT WIN32 AND NOT APPLE AND NOT ENABLE_WAFFLE)
+if (ENABLE_EGL AND ENABLE_X11 AND X11_FOUND AND NOT WIN32 AND NOT APPLE AND NOT ENABLE_WAFFLE)
     add_executable (eglretrace
         glws_xlib.cpp
         glws_egl_xlib.cpp
@@ -176,6 +176,33 @@ if (ENABLE_EGL AND X11_FOUND AND NOT WIN32 AND NOT APPLE AND NOT ENABLE_WAFFLE)
     )
     install (TARGETS eglretrace RUNTIME DESTINATION bin)
 endif ()
+
+if (ENABLE_EGL AND NOT ENABLE_X11 AND NOT WIN32 AND NOT APPLE AND NOT ENABLE_WAFFLE )
+    add_executable (eglretrace
+       glws_nonx.cpp )
+
+    add_dependencies (eglretrace glproc)
+    include_directories (${CMAKE_SYSROOT}/usr/include/HAL/)
+
+    target_link_libraries (eglretrace retrace_common
+        glretrace_common
+        glhelpers
+        glproc_egl
+        ${CMAKE_THREAD_LIBS_INIT}
+        ${CMAKE_DL_LIBS}
+        ${Vivante_G2D_LIBRARY}
+        ${Vivante_VDK_LIBRARY}
+        )
+
+    if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+       target_link_libraries (eglretrace rt)
+       if (READPROC_H_FOUND)
+            target_link_libraries (eglretrace ${proc_LIBRARY})
+       endif ()
+    endif ()
+
+    install (TARGETS eglretrace RUNTIME DESTINATION bin)
+endif()
 
 if (ENABLE_EGL AND ENABLE_WAFFLE)
     link_directories(${Waffle_LIBRARY_DIRS})

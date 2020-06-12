@@ -182,7 +182,7 @@ elseif (APPLE)
 elseif (ENABLE_X11)
     find_package (X11)
 
-    if (X11_FOUND)
+    if (X11_FOUND AND ENABLE_X11)
         include_directories (${X11_INCLUDE_DIR})
         add_definitions (-DHAVE_X11)
     else ()
