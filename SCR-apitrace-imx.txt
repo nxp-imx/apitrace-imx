@@ -1,0 +1,9 @@
+Package:                     apitrace-imx.git
+Version:                     13.0
+Outgoing License:            MIT
+License File:                LICENSE
+Type of Content:             source
+Description and comments:    GPU Core IP and test application source
+Release Location:            https://github.com/nxp-imx/apitrace-imx -b lf-6.6.23-2.0.0
+Origin:                      NXP (MIT)
+                             apitrace (MIT) - https://github.com/apitrace/apitrace
