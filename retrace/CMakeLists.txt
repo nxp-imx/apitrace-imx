@@ -190,7 +190,9 @@ endif ()
 
 if (ENABLE_EGL AND NOT ENABLE_X11 AND NOT WIN32 AND NOT APPLE AND NOT ENABLE_WAFFLE )
     add_executable (eglretrace
-       glws_nonx.cpp )
+       glws_nonx.cpp
+       glproc_egl.cpp
+    )
 
     add_dependencies (eglretrace glproc)
     include_directories (${CMAKE_SYSROOT}/usr/include/HAL/)
@@ -198,7 +200,7 @@ if (ENABLE_EGL AND NOT ENABLE_X11 AND NOT WIN32 AND NOT APPLE AND NOT ENABLE_WAF
     target_link_libraries (eglretrace retrace_common
         glretrace_common
         glhelpers
-        glproc_egl
+        glproc
         ${CMAKE_THREAD_LIBS_INIT}
         ${CMAKE_DL_LIBS}
         ${Vivante_G2D_LIBRARY}
