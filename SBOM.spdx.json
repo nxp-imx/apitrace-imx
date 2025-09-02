@@ -1,0 +1,81 @@
+{
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "spdxVersion": "SPDX-2.3",
+  "creationInfo": {
+    "created": "2025-08-24T08:02:15Z",
+    "creators": [
+      "Organization: NXP"
+    ],
+    "licenseListVersion": "3.20"
+  },
+  "name": "apitrace-imx-LF_6.12.34_2.1.0",
+  "dataLicense": "CC0-1.0",
+  "documentNamespace": "https://nxp.com/spdx/1f4f1f8e-e792-41ff-894b-3f43ac7d2dc3",
+  "packages": [
+    {
+      "SPDXID": "SPDXRef-package-1f4f1f8e-e792-41ff-894b-3f43ac7d2dc3",
+      "name": "apitrace-imx",
+      "versionInfo": "LF_6.12.34_2.1.0",
+      "licenseConcluded": "(MIT)",
+      "licenseDeclared": "(MIT)",
+      "downloadLocation": "https://github.com/nxp-imx/apitrace-imx -b lf-6.12.34-2.1.0",
+      "originator": "Organization: NXP",
+      "supplier": "NOASSERTION",
+      "externalRefs": [],
+      "filesAnalyzed": false
+    },
+    {
+      "SPDXID": "SPDXRef-package-ec908954-838d-41ca-9ac9-cb4f3aec63e9",
+      "name": "apitrace",
+      "versionInfo": "12.0",
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "homepage": "https://github.com/apitrace/apitrace",
+      "downloadLocation": "NOASSERTION",
+      "originator": "Organization: apitrace",
+      "supplier": "NOASSERTION",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:github/apitrace/apitrace@12.0",
+          "referenceType": "purl"
+        },
+        {
+          "referenceCategory": "OTHER",
+          "referenceLocator": "740753e9-d5ab-4c7f-be58-84b54c83b308",
+          "referenceType": "BlackDuck-ComponentOrigin"
+        }
+      ],
+      "filesAnalyzed": false
+    },
+    {
+      "SPDXID": "SPDXRef-package-ebe131bd-8cd6-4bf5-9251-a7fff01d88f2",
+      "name": "Khronos Group - OpenGL ES",
+      "versionInfo": "2.0",
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "downloadLocation": "NOASSERTION",
+      "originator": "Organization: Khronos Group - OpenGL ES",
+      "supplier": "NOASSERTION",
+      "externalRefs": [],
+      "filesAnalyzed": false
+    }
+  ],
+  "relationships": [
+    {
+      "spdxElementId": "SPDXRef-DOCUMENT",
+      "relationshipType": "DESCRIBES",
+      "relatedSpdxElement": "SPDXRef-package-1f4f1f8e-e792-41ff-894b-3f43ac7d2dc3"
+    },
+    {
+      "spdxElementId": "SPDXRef-package-1f4f1f8e-e792-41ff-894b-3f43ac7d2dc3",
+      "relationshipType": "DYNAMIC_LINK",
+      "relatedSpdxElement": "SPDXRef-package-ebe131bd-8cd6-4bf5-9251-a7fff01d88f2"
+    },
+    {
+      "spdxElementId": "SPDXRef-package-1f4f1f8e-e792-41ff-894b-3f43ac7d2dc3",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-package-ec908954-838d-41ca-9ac9-cb4f3aec63e9"
+    }
+  ]
+}
