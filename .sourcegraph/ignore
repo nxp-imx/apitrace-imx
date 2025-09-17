@@ -1,0 +1,6 @@
+thirdparty/dxerr/license.txt
+gui/pixelwidget.h
+thirdparty/dxerr/CMakeLists.txt
+thirdparty/dxerr/dxerr.cpp
+thirdparty/dxerr/dxerr.h
+gui/pixelwidget.cpp
