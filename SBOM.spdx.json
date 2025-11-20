@@ -2,26 +2,343 @@
   "SPDXID": "SPDXRef-DOCUMENT",
   "spdxVersion": "SPDX-2.3",
   "creationInfo": {
-    "created": "2025-08-24T08:02:15Z",
+    "created": "2025-11-10T14:11:08Z",
     "creators": [
       "Organization: NXP"
     ],
     "licenseListVersion": "3.20"
   },
-  "name": "apitrace-imx-LF_6.12.34_2.1.0",
+  "name": "apitrace-imx-LF_6.12.49_2.2.0",
   "dataLicense": "CC0-1.0",
-  "documentNamespace": "https://nxp.com/spdx/1f4f1f8e-e792-41ff-894b-3f43ac7d2dc3",
+  "documentNamespace": "https://nxp.com/spdx/7a6961ad-76b6-4bee-8aec-85a754c1bfac",
   "packages": [
     {
-      "SPDXID": "SPDXRef-package-1f4f1f8e-e792-41ff-894b-3f43ac7d2dc3",
+      "SPDXID": "SPDXRef-package-00c43501-0b49-4f50-9dca-b40c017f5ac7",
+      "name": "jbeder/yaml-cpp",
+      "versionInfo": "0.6.2",
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "homepage": "https://github.com/jbeder/yaml-cpp",
+      "downloadLocation": "NOASSERTION",
+      "originator": "Organization: alpine",
+      "supplier": "NOASSERTION",
+      "externalRefs": [
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:yaml-cpp_project:yaml-cpp:0.6.2:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:jbeder:yaml_cpp:0.6.2:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        },
+        {
+          "referenceCategory": "OTHER",
+          "referenceLocator": "01a817fe-d224-40ad-9844-439c8abc7b21",
+          "referenceType": "BlackDuck-ComponentOrigin"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:jesse_beder:yaml_cpp:0.6.2:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        },
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:apk/alpine/yaml-cpp-dev@0.6.2-r1?arch=ppc64le",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false
+    },
+    {
+      "SPDXID": "SPDXRef-package-2cf012d7-6083-40b5-8306-13686c087c9c",
+      "name": "Khronos Group - OpenGL ES",
+      "versionInfo": "1.1",
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "downloadLocation": "NOASSERTION",
+      "originator": "Organization: Khronos Group - OpenGL ES",
+      "supplier": "NOASSERTION",
+      "externalRefs": [],
+      "filesAnalyzed": false
+    },
+    {
+      "SPDXID": "SPDXRef-package-6af2ba5b-aa1c-4dce-9e44-3fe0962f69ba",
+      "name": "Google C++ Testing Framework",
+      "versionInfo": "1.8.0",
+      "licenseConcluded": "BSD-3-Clause",
+      "licenseDeclared": "BSD-3-Clause",
+      "homepage": "https://github.com/google/googletest/",
+      "downloadLocation": "https://bodhi.fedoraproject.org/updates/gtest-devel-1.8.0-1.fc28",
+      "originator": "Organization: fedora",
+      "supplier": "NOASSERTION",
+      "externalRefs": [
+        {
+          "referenceCategory": "OTHER",
+          "referenceLocator": "db99dbef-f13a-4845-9c87-7434809ce901",
+          "referenceType": "BlackDuck-ComponentOrigin"
+        },
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:rpm/fedora/gtest-devel@1.8.0-1.fc28?arch=armv7hl",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false
+    },
+    {
+      "SPDXID": "SPDXRef-package-6b89a02e-7147-49f1-95bd-5f3b281d0d02",
+      "name": "google-snappy",
+      "versionInfo": "1.1.8",
+      "licenseConcluded": "BSD-3-Clause",
+      "licenseDeclared": "BSD-3-Clause",
+      "homepage": "http://google.github.io/snappy/",
+      "downloadLocation": "NOASSERTION",
+      "originator": "Organization: opensuse",
+      "supplier": "NOASSERTION",
+      "externalRefs": [
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:google:snappy:1.1.8:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        },
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:rpm/opensuse/snappy-debugsource@1.1.8-lp152.4.3.1?arch=i586",
+          "referenceType": "purl"
+        },
+        {
+          "referenceCategory": "OTHER",
+          "referenceLocator": "dbb44735-b08d-4062-b96f-6540c8c71e4e",
+          "referenceType": "BlackDuck-ComponentOrigin"
+        }
+      ],
+      "filesAnalyzed": false
+    },
+    {
+      "SPDXID": "SPDXRef-package-766c78d6-136e-4da8-98b8-065bdc6ffb21",
+      "name": "brotli",
+      "versionInfo": "1.0.6",
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "homepage": "https://github.com/google/brotli",
+      "downloadLocation": "https://access.cdn.redhat.com//content/origin/rpms/jbcs-httpd24-brotli-devel/1.0.6-7.jbcs.el6/x86_64/7.jbcs.el6/fd431d51",
+      "originator": "Organization: redhat",
+      "supplier": "NOASSERTION",
+      "externalRefs": [
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:almalinux_package:brotli-devel:1.0.6:3.el8:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:almalinux_package:brotli-devel:1.0.6:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:almalinux_package:brotli:1.0.6:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        },
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:rpm/redhat/jbcs-httpd24-brotli-devel@1.0.6-7.jbcs.el6?arch=x86_64",
+          "referenceType": "purl"
+        },
+        {
+          "referenceCategory": "OTHER",
+          "referenceLocator": "ecf81555-981c-4165-bd7a-4010f5b1a088",
+          "referenceType": "BlackDuck-ComponentOrigin"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:almalinux_package:brotli:1.0.6:2.el8:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:almalinux_package:brotli-devel:1.0.6:2.el8:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        }
+      ],
+      "filesAnalyzed": false
+    },
+    {
+      "SPDXID": "SPDXRef-package-7a6961ad-76b6-4bee-8aec-85a754c1bfac",
       "name": "apitrace-imx",
-      "versionInfo": "LF_6.12.34_2.1.0",
+      "versionInfo": "LF_6.12.49_2.2.0",
       "licenseConcluded": "(MIT)",
       "licenseDeclared": "(MIT)",
-      "downloadLocation": "https://github.com/nxp-imx/apitrace-imx -b lf-6.12.34-2.1.0",
+      "downloadLocation": "https://github.com/nxp-imx/apitrace-imx -b lf-6.12.49-2.2.0",
       "originator": "Organization: NXP",
       "supplier": "NOASSERTION",
       "externalRefs": [],
+      "filesAnalyzed": false
+    },
+    {
+      "SPDXID": "SPDXRef-package-7f15534b-7830-422e-aa89-a7ab4965edb9",
+      "name": "libpng",
+      "versionInfo": "1.6.29",
+      "licenseConcluded": "Libpng",
+      "licenseDeclared": "Libpng",
+      "homepage": "http://www.libpng.org/pub/png/libpng.html",
+      "downloadLocation": "NOASSERTION",
+      "originator": "Organization: alpine",
+      "supplier": "NOASSERTION",
+      "externalRefs": [
+        {
+          "referenceCategory": "OTHER",
+          "referenceLocator": "dcb436a5-86e5-41d0-a4c9-31f18aede31c",
+          "referenceType": "BlackDuck-ComponentOrigin"
+        },
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:apk/alpine/libpng-doc@1.6.29-r1?arch=noarch",
+          "referenceType": "purl"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:greg_roelofs:libpng:1.6.29:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:photon_package:libpng:1.6.29:1.ph2:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:libpng:libgpng:1.6.29:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:libpng:libpng:1.6.29:-:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:libpng:libpng:1.6.29:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        }
+      ],
+      "filesAnalyzed": false
+    },
+    {
+      "SPDXID": "SPDXRef-package-a7696e42-4c5c-4758-af06-2384fb18c976",
+      "name": "Khronos EGL Headers",
+      "versionInfo": "1.5",
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "homepage": "http://www.khronos.org/registry/egl/",
+      "downloadLocation": "NOASSERTION",
+      "originator": "Organization: Khronos EGL Headers",
+      "supplier": "NOASSERTION",
+      "externalRefs": [],
+      "filesAnalyzed": false
+    },
+    {
+      "SPDXID": "SPDXRef-package-ac5e2ad5-635c-4f93-b1c1-4a4fa6806592",
+      "name": "compu-brotli-sys",
+      "versionInfo": "1.0.10",
+      "licenseConcluded": "BSL-1.0",
+      "licenseDeclared": "BSL-1.0",
+      "homepage": "https://crates.io/crates/compu-brotli-sys",
+      "downloadLocation": "https://crates.io/crates/compu-brotli-sys/1.0.10",
+      "originator": "Organization: crates",
+      "supplier": "NOASSERTION",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/compu-brotli-sys@1.0.10",
+          "referenceType": "purl"
+        },
+        {
+          "referenceCategory": "OTHER",
+          "referenceLocator": "c01f54eb-584f-4bfa-8020-ddf4bede50d7",
+          "referenceType": "BlackDuck-ComponentOrigin"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:crates_package:compu-brotli-sys:1.0.10:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        }
+      ],
+      "filesAnalyzed": false
+    },
+    {
+      "SPDXID": "SPDXRef-package-d1e7a21e-af95-4ce8-a848-191b8cdce599",
+      "name": "mkwebfont",
+      "versionInfo": "0.1.1",
+      "licenseConcluded": "Apache-2.0",
+      "licenseDeclared": "Apache-2.0",
+      "homepage": "https://crates.io/crates/mkwebfont",
+      "downloadLocation": "https://crates.io/crates/mkwebfont/0.1.1",
+      "originator": "Organization: crates",
+      "supplier": "NOASSERTION",
+      "externalRefs": [
+        {
+          "referenceCategory": "OTHER",
+          "referenceLocator": "83fa5860-5c2d-457c-8e01-663d3512dde5",
+          "referenceType": "BlackDuck-ComponentOrigin"
+        },
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/mkwebfont@0.1.1",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false
+    },
+    {
+      "SPDXID": "SPDXRef-package-df432f03-cc7f-47a2-933d-dd75fdb1c778",
+      "name": "brotli",
+      "versionInfo": "v1.0.7",
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "homepage": "https://github.com/google/brotli",
+      "downloadLocation": "NOASSERTION",
+      "originator": "Organization: opensuse",
+      "supplier": "NOASSERTION",
+      "externalRefs": [
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:debian_package:libbrotli-dev:1.0.7:1:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:debian_package:libbrotli-dev:1.0.7:4:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:debian_package:libbrotli-dev:1.0.7:2:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        },
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:rpm/opensuse/brotli-debugsource@1.0.7-1.1?arch=armv6hl",
+          "referenceType": "purl"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:debian_package:libbrotli-dev:1.0.7:3:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:debian_package:libbrotli-dev:1.0.7:2\\+deb10u1:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        },
+        {
+          "referenceCategory": "OTHER",
+          "referenceLocator": "ea1513e0-7016-4773-87e8-0d02c9c7f7eb",
+          "referenceType": "BlackDuck-ComponentOrigin"
+        }
+      ],
       "filesAnalyzed": false
     },
     {
@@ -49,33 +366,95 @@
       "filesAnalyzed": false
     },
     {
-      "SPDXID": "SPDXRef-package-ebe131bd-8cd6-4bf5-9251-a7fff01d88f2",
-      "name": "Khronos Group - OpenGL ES",
-      "versionInfo": "2.0",
-      "licenseConcluded": "MIT",
-      "licenseDeclared": "MIT",
-      "downloadLocation": "NOASSERTION",
-      "originator": "Organization: Khronos Group - OpenGL ES",
+      "SPDXID": "SPDXRef-package-f8891375-7013-41ab-8c76-9cc95b494920",
+      "name": "rs-gles2",
+      "versionInfo": "0.1.0",
+      "licenseConcluded": "BSD-3-Clause",
+      "licenseDeclared": "BSD-3-Clause",
+      "homepage": "https://crates.io/crates/rs-gles2",
+      "downloadLocation": "https://crates.io/crates/rs-gles2/0.1.0",
+      "originator": "Organization: crates",
       "supplier": "NOASSERTION",
-      "externalRefs": [],
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/rs-gles2@0.1.0",
+          "referenceType": "purl"
+        },
+        {
+          "referenceCategory": "OTHER",
+          "referenceLocator": "8b970952-c923-4c9e-97f7-b631c5117782",
+          "referenceType": "BlackDuck-ComponentOrigin"
+        }
+      ],
       "filesAnalyzed": false
     }
   ],
   "relationships": [
     {
+      "spdxElementId": "SPDXRef-package-7a6961ad-76b6-4bee-8aec-85a754c1bfac",
+      "relationshipType": "DYNAMIC_LINK",
+      "relatedSpdxElement": "SPDXRef-package-00c43501-0b49-4f50-9dca-b40c017f5ac7"
+    },
+    {
+      "spdxElementId": "SPDXRef-package-7a6961ad-76b6-4bee-8aec-85a754c1bfac",
+      "relationshipType": "DYNAMIC_LINK",
+      "relatedSpdxElement": "SPDXRef-package-2cf012d7-6083-40b5-8306-13686c087c9c"
+    },
+    {
+      "spdxElementId": "SPDXRef-package-7a6961ad-76b6-4bee-8aec-85a754c1bfac",
+      "relationshipType": "DYNAMIC_LINK",
+      "relatedSpdxElement": "SPDXRef-package-6af2ba5b-aa1c-4dce-9e44-3fe0962f69ba"
+    },
+    {
+      "spdxElementId": "SPDXRef-package-7a6961ad-76b6-4bee-8aec-85a754c1bfac",
+      "relationshipType": "DYNAMIC_LINK",
+      "relatedSpdxElement": "SPDXRef-package-6b89a02e-7147-49f1-95bd-5f3b281d0d02"
+    },
+    {
+      "spdxElementId": "SPDXRef-package-7a6961ad-76b6-4bee-8aec-85a754c1bfac",
+      "relationshipType": "DYNAMIC_LINK",
+      "relatedSpdxElement": "SPDXRef-package-766c78d6-136e-4da8-98b8-065bdc6ffb21"
+    },
+    {
       "spdxElementId": "SPDXRef-DOCUMENT",
       "relationshipType": "DESCRIBES",
-      "relatedSpdxElement": "SPDXRef-package-1f4f1f8e-e792-41ff-894b-3f43ac7d2dc3"
+      "relatedSpdxElement": "SPDXRef-package-7a6961ad-76b6-4bee-8aec-85a754c1bfac"
     },
     {
-      "spdxElementId": "SPDXRef-package-1f4f1f8e-e792-41ff-894b-3f43ac7d2dc3",
+      "spdxElementId": "SPDXRef-package-7a6961ad-76b6-4bee-8aec-85a754c1bfac",
       "relationshipType": "DYNAMIC_LINK",
-      "relatedSpdxElement": "SPDXRef-package-ebe131bd-8cd6-4bf5-9251-a7fff01d88f2"
+      "relatedSpdxElement": "SPDXRef-package-7f15534b-7830-422e-aa89-a7ab4965edb9"
     },
     {
-      "spdxElementId": "SPDXRef-package-1f4f1f8e-e792-41ff-894b-3f43ac7d2dc3",
+      "spdxElementId": "SPDXRef-package-7a6961ad-76b6-4bee-8aec-85a754c1bfac",
+      "relationshipType": "DYNAMIC_LINK",
+      "relatedSpdxElement": "SPDXRef-package-a7696e42-4c5c-4758-af06-2384fb18c976"
+    },
+    {
+      "spdxElementId": "SPDXRef-package-7a6961ad-76b6-4bee-8aec-85a754c1bfac",
+      "relationshipType": "DYNAMIC_LINK",
+      "relatedSpdxElement": "SPDXRef-package-ac5e2ad5-635c-4f93-b1c1-4a4fa6806592"
+    },
+    {
+      "spdxElementId": "SPDXRef-package-7a6961ad-76b6-4bee-8aec-85a754c1bfac",
+      "relationshipType": "DYNAMIC_LINK",
+      "relatedSpdxElement": "SPDXRef-package-d1e7a21e-af95-4ce8-a848-191b8cdce599"
+    },
+    {
+      "spdxElementId": "SPDXRef-package-7a6961ad-76b6-4bee-8aec-85a754c1bfac",
+      "relationshipType": "DYNAMIC_LINK",
+      "relatedSpdxElement": "SPDXRef-package-df432f03-cc7f-47a2-933d-dd75fdb1c778"
+    },
+    {
+      "spdxElementId": "SPDXRef-package-7a6961ad-76b6-4bee-8aec-85a754c1bfac",
       "relationshipType": "CONTAINS",
       "relatedSpdxElement": "SPDXRef-package-ec908954-838d-41ca-9ac9-cb4f3aec63e9"
+    },
+    {
+      "spdxElementId": "SPDXRef-package-7a6961ad-76b6-4bee-8aec-85a754c1bfac",
+      "relationshipType": "DYNAMIC_LINK",
+      "relatedSpdxElement": "SPDXRef-package-f8891375-7013-41ab-8c76-9cc95b494920"
     }
   ]
 }
