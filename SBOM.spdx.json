@@ -2,23 +2,23 @@
   "SPDXID": "SPDXRef-DOCUMENT",
   "spdxVersion": "SPDX-2.3",
   "creationInfo": {
-    "created": "2025-08-24T08:02:15Z",
+    "created": "2026-01-26T02:01:22Z",
     "creators": [
       "Organization: NXP"
     ],
-    "licenseListVersion": "3.20"
+    "licenseListVersion": "3.26"
   },
-  "name": "apitrace-imx-LF_6.12.34_2.1.0",
+  "name": "apitrace-imx-LF_6.18.2_1.0.0",
   "dataLicense": "CC0-1.0",
-  "documentNamespace": "https://nxp.com/spdx/1f4f1f8e-e792-41ff-894b-3f43ac7d2dc3",
+  "documentNamespace": "https://nxp.com/spdx/0bc92914-b13d-4f3b-92ae-c1fc913516d8",
   "packages": [
     {
-      "SPDXID": "SPDXRef-package-1f4f1f8e-e792-41ff-894b-3f43ac7d2dc3",
+      "SPDXID": "SPDXRef-package-0bc92914-b13d-4f3b-92ae-c1fc913516d8",
       "name": "apitrace-imx",
-      "versionInfo": "LF_6.12.34_2.1.0",
+      "versionInfo": "LF_6.18.2_1.0.0",
       "licenseConcluded": "(MIT)",
       "licenseDeclared": "(MIT)",
-      "downloadLocation": "https://github.com/nxp-imx/apitrace-imx -b lf-6.12.34-2.1.0",
+      "downloadLocation": "https://github.com/nxp-imx/apitrace-imx -b lf-6.18.2-1.0.0",
       "originator": "Organization: NXP",
       "supplier": "NOASSERTION",
       "externalRefs": [],
@@ -36,14 +36,38 @@
       "supplier": "NOASSERTION",
       "externalRefs": [
         {
-          "referenceCategory": "PACKAGE-MANAGER",
-          "referenceLocator": "pkg:github/apitrace/apitrace@12.0",
-          "referenceType": "purl"
-        },
-        {
           "referenceCategory": "OTHER",
           "referenceLocator": "740753e9-d5ab-4c7f-be58-84b54c83b308",
           "referenceType": "BlackDuck-ComponentOrigin"
+        },
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:github/apitrace/apitrace@12.0",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false
+    },
+    {
+      "SPDXID": "SPDXRef-package-654c9eea-e02c-47a5-a551-170f0d92f49a",
+      "name": "apitrace",
+      "versionInfo": "13.0",
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "homepage": "https://github.com/apitrace/apitrace",
+      "downloadLocation": "NOASSERTION",
+      "originator": "Organization: opensuse",
+      "supplier": "NOASSERTION",
+      "externalRefs": [
+        {
+          "referenceCategory": "OTHER",
+          "referenceLocator": "33718237-7b8f-4565-b9c6-73ff22ed94cc",
+          "referenceType": "BlackDuck-ComponentOrigin"
+        },
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:rpm/opensuse/apitrace@13.0-1.2?arch=armv7hl",
+          "referenceType": "purl"
         }
       ],
       "filesAnalyzed": false
@@ -65,16 +89,26 @@
     {
       "spdxElementId": "SPDXRef-DOCUMENT",
       "relationshipType": "DESCRIBES",
-      "relatedSpdxElement": "SPDXRef-package-1f4f1f8e-e792-41ff-894b-3f43ac7d2dc3"
+      "relatedSpdxElement": "SPDXRef-package-0bc92914-b13d-4f3b-92ae-c1fc913516d8"
     },
     {
-      "spdxElementId": "SPDXRef-package-1f4f1f8e-e792-41ff-894b-3f43ac7d2dc3",
+      "spdxElementId": "SPDXRef-package-0bc92914-b13d-4f3b-92ae-c1fc913516d8",
+      "relationshipType": "DYNAMIC_LINK",
+      "relatedSpdxElement": "SPDXRef-package-654c9eea-e02c-47a5-a551-170f0d92f49a"
+    },
+    {
+      "spdxElementId": "SPDXRef-package-0bc92914-b13d-4f3b-92ae-c1fc913516d8",
       "relationshipType": "DYNAMIC_LINK",
       "relatedSpdxElement": "SPDXRef-package-ebe131bd-8cd6-4bf5-9251-a7fff01d88f2"
     },
     {
-      "spdxElementId": "SPDXRef-package-1f4f1f8e-e792-41ff-894b-3f43ac7d2dc3",
+      "spdxElementId": "SPDXRef-package-0bc92914-b13d-4f3b-92ae-c1fc913516d8",
       "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-package-ec908954-838d-41ca-9ac9-cb4f3aec63e9"
+    },
+    {
+      "spdxElementId": "SPDXRef-package-0bc92914-b13d-4f3b-92ae-c1fc913516d8",
+      "relationshipType": "DYNAMIC_LINK",
       "relatedSpdxElement": "SPDXRef-package-ec908954-838d-41ca-9ac9-cb4f3aec63e9"
     }
   ]
